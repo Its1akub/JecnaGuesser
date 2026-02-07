@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Game{% endblock %}
+
+{% block body %}
+<h1>Game</h1>
+<h2>{{ difficulty }}</h2>
+
+<div {{ stimulus_controller('countup', {
+    start: date('c')
+}) }}>
+    <p>Time elapsed: <span {{ stimulus_target('countup', 'display') }}>0s</span></p>
+</div>
+
+<a href="{{ path('app_home') }}">Home</a>
+
+{% endblock %}

@@ -1,3 +1,13 @@
+:root {
+    font-family: Roboto;
+
+    --primary: #1d61dd;
+    --secondary: #073377;
+    --white: #efefef;
+    --bg1: #0f0f0f;
+}
+
 body {
-    background-color: skyblue;
+    color: var(--white);
+    background-color: var(--bg1);
 }

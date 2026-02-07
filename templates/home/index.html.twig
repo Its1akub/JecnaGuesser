@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ječná Guesser{% endblock %}
+
+{% block body %}
+
+<h1>Ječná Guesser</h1>
+
+<h2>Select Difficulty</h2>
+<div class="menu">
+    <a href="{{ path('app_game', { difficulty: 'easy' }) }}" class="btn">Easy</a>
+    <a href="{{ path('app_game', { difficulty: 'medium' }) }}" class="btn">Medium</a>
+    <a href="{{ path('app_game', { difficulty: 'hard' }) }}" class="btn">Hard</a>
+</div>
+
+{% endblock %}
