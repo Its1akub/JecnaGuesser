@@ -12,15 +12,11 @@ class GameController extends AbstractController
     public function play(string $difficulty): Response
     {
         $validModes = ['easy', 'medium', 'hard'];
-        if (!in_array($difficulty, $validModes)) {
-            //throw $this->createNotFoundException('Invalid difficulty');
-
+        if (!in_array(strtolower($difficulty), $validModes))
+        {
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('game/game.html.twig',
-        [
-            'difficulty' => $difficulty,
-        ]);
+        return $this->render('game/game.html.twig', ['difficulty' => ucfirst($difficulty)]);
     }
 }

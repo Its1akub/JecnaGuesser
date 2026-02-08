@@ -1,16 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ječná Guesser{% endblock %}
+{% block title %}Home
+{% endblock %}
 
 {% block body %}
 
 <h1>Ječná Guesser</h1>
 
-<h2>Select Difficulty</h2>
-<div class="menu">
-    <a href="{{ path('app_game', { difficulty: 'easy' }) }}" class="btn">Easy</a>
-    <a href="{{ path('app_game', { difficulty: 'medium' }) }}" class="btn">Medium</a>
-    <a href="{{ path('app_game', { difficulty: 'hard' }) }}" class="btn">Hard</a>
+<div data-controller="difficulty" class="start-area">
+    <h2>Select Difficulty</h2>
+    <div class="difficulty-selection" style="margin-bottom: 30px;">
+        <button type="button" class="diff-btn diff-btn-selected"
+               data-action="click->difficulty#select"
+               data-difficulty-target="btn"
+               data-value="easy">Easy</button>
+
+        <button type="button" class="diff-btn"
+               data-action="click->difficulty#select"
+               data-difficulty-target="btn"
+               data-value="medium">Medium</button>
+
+        <button type="button" class="diff-btn"
+               data-action="click->difficulty#select"
+               data-difficulty-target="btn"
+               data-value="hard">Hard</button>
+    </div>
+
+    <form method="POST" id="play-form">
+        <input type="hidden" name="difficulty" data-difficulty-target="input" id="selected-difficulty" value="easy">
+        <button type="submit" id="play-button" class="play-btn">PLAY</button>
+    </form>
 </div>
 
 {% endblock %}

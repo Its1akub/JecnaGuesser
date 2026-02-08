@@ -1,5 +1,6 @@
 :root {
     font-family: Roboto;
+    font-size: 3em;
 
     --primary: #1d61dd;
     --secondary: #073377;
@@ -10,4 +11,51 @@
 body {
     color: var(--white);
     background-color: var(--bg1);
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.start-area {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 4em;
+    margin-inline: auto;
+}
+
+
+.play-btn {
+    font-size: 2em;
+    font-weight: 800;
+    text-shadow: 0 0 0.5em var(--secondary);
+
+    padding: 5px 0;
+    width: 75%;
+
+    border: 0.04em solid var(--white);
+    border-radius: 1em;
+
+    color: var(--white);
+    background-color: var(--primary);
+
+    box-shadow: 0 0 1em var(--secondary);
+
+    transition: 100ms;
+}
+
+.play-btn:hover {
+    background-color: var(--secondary);
+}
+
+.diff-btn {
+    background-color: '';
+}
+
+.diff-btn-selected {
+    background-color: var(--primary);
 }
