@@ -8,10 +8,10 @@
 
 <div {{ stimulus_controller('countup', {
     start: date('c')
-}) }}>
+}) }} class="blurred-div">
     <p>Time elapsed: <span {{ stimulus_target('countup', 'display') }}>0s</span></p>
 </div>
 
-<a href="{{ path('app_home') }}">Home</a>
+<a href="{{ path('app_home') }}" class="diff-btn">Home</a>
 
 {% endblock %}

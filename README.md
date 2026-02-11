@@ -1,4 +1,4 @@
-<img src="assets/images/jg_banner_logo_dark.svg" alt="Logo" width="450"/>
+<img src="assets/images/jg_banner_logo_dark.svg" alt="Logo"/>
 
 # JEČNÁ GUESSER
-From a picture, guess where in the school you are.
+From a picture, guess where you are in SPŠE Ječná.

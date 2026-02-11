@@ -1,15 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home
-{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block body %}
 
-<h1>Ječná Guesser</h1>
+<img src="{{ asset('jg_logo_large.svg') }}" alt="Logo" class="home-logo"/>
+<h1 class="title-name">Ječná Guesser</h1>
+<p>From a picture, guess where you are in SPŠE Ječná.</p>
+
+<a href="{{ path('app_game', { difficulty: 'easy' }) }}" class="diff-btn">Leaderboard</a>
 
 <div data-controller="difficulty" class="start-area">
-    <h2>Select Difficulty</h2>
-    <div class="difficulty-selection" style="margin-bottom: 30px;">
+    <div class="blurred-div">
         <button type="button" class="diff-btn diff-btn-selected"
                data-action="click->difficulty#select"
                data-difficulty-target="btn"
