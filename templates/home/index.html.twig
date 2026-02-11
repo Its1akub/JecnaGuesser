@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Jecna Guesser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .language-switch {
+            margin-left: auto;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .play-button {
+            font-size: 24px;
+            padding: 20px 40px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .play-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div>
+        <a href="{{ path('app_home') }}">Home</a>
+        <a href="{{ path('app_leaderboard') }}">Leaderboard</a>
+    </div>
+    <div class="language-switch">
+        <a href="?lang=cs">Čeština</a> | <a href="?lang=en">English</a>
+    </div>
+</nav>
+
+<div class="container">
+    <h1>Vítej ve hře Jecna Guesser!</h1>
+    <button class="play-button" onclick="window.location.href='{{ path('app_play') }}'">Play</button>
+</div>
+
+</body>
+</html>
