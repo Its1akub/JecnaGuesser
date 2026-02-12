@@ -11,9 +11,8 @@ final class LeaderboardController extends AbstractController
     #[Route('/leaderboard', name: 'app_leaderboard')]
     public function index(): Response
     {
-        return $this->render('leaderboard/index.html.twig', [
+        return $this->render('leaderboard/leaderboard.html.twig', [
             'controller_name' => 'LeaderboardController',
         ]);
     }
 }
-

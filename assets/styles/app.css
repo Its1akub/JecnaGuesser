@@ -1,6 +1,9 @@
 :root {
-    font-family: Roboto;
-    font-size: calc(16px + 1vw);
+    font-family: "Google Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 2.4vh;
 
     --primary: #1d61dd;
     --secondary: #073377;
@@ -118,7 +121,7 @@ h1 {
     transition: 150ms;
 }
 
-.diff-btn:active, .diff-btn:hover {
+.diff-btn:hover {
     background-color: var(--white2);
     border-radius: 0.6em;
     cursor: pointer;
@@ -137,7 +140,7 @@ h1 {
 
 }
 
-.diff-btn-selected:active, .diff-btn-selected:hover {
+.diff-btn-selected:hover {
     background-color: var(--primary);
 }
 
