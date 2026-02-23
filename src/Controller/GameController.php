@@ -96,7 +96,7 @@ class GameController extends AbstractController
     #[Route('/game/finish', name: 'game_finish')]
     public function finish(): Response
     {
-        return $this->render('game/enter_name.html.twig');
+        return $this->render('game/form.html.twig');
     }
 
     #[Route('/game/save', name: 'game_save', methods: ['POST'])]
@@ -120,7 +120,7 @@ class GameController extends AbstractController
 
         $session->invalidate();
 
-        return $this->render('game/success.html.twig', [
+        return $this->render('game/save.html.twig', [
             'score' => $score
         ]);
     }
