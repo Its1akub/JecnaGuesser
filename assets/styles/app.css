@@ -32,7 +32,7 @@ body {
 
 p {
    font-size: 0.85em;
-   width: 70%;
+   width: 95%;
    margin: auto;
    color: var(--white2);
 }
@@ -40,7 +40,7 @@ p {
 .home-logo {
     width: 8.5em;
 
-    margin-top: 0.25em;
+    margin-top: -20px;
     margin-bottom: 0;
 }
 
@@ -92,7 +92,7 @@ h1 {
     border: 0.12em solid rgba(255, 255, 255, 0.08);
 
     width: 60%;
-    padding: 0.8em 0;
+    padding: 0.3em 0;
     margin: auto;
 
     margin-bottom: 3em;
@@ -110,7 +110,7 @@ h1 {
     text-decoration: none;
 
     display: block;
-    padding: 0.2em 1em;
+    padding: 0.15em 1em;
     margin: auto;
     width: 6em;
     margin-block: 0.5em;
@@ -142,6 +142,142 @@ h1 {
 
 .diff-btn-selected:hover {
     background-color: var(--primary);
+}
+
+
+
+
+.game-navbar {
+    background-color: var(--secondary);
+    border: 0.12em solid var(--primary);
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    width: 95%;
+    padding: 0.5em 0;
+    margin: auto;
+
+    margin-bottom: 3em;
+
+    border-radius: 10em;
+    box-shadow: 0 0 1.2em black;
+    backdrop-filter: blur(2px);
+}
+
+
+.location-container {
+    width: 90%;
+    height: 0;
+    padding-bottom: 90%;
+    overflow: hidden;
+    margin: auto;
+    position: absolute;
+
+    right: 0;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+
+    border-radius: 1.75em;
+    z-index: -1;
+}
+
+.location-image {
+    position: absolute;
+    left: -1000%;
+    right: -1000%;
+    top: -1000%;
+    bottom: -1000%;
+    margin: auto;
+    max-height: 100%;
+}
+
+
+.map-container {
+    display: flex;
+    flex-direction: column;
+
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    max-width: 100%;
+    height: 20vh;
+
+    z-index: 10;
+    transition: height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.175);
+}
+
+.map-container.expanded {
+    height: 69vh;
+    z-index: 100;
+}
+
+.map-image {
+    max-width: 100%;
+    pointer-events: none;
+}
+
+.map-wrapper {
+  flex-grow: 1;
+  position: relative;
+  overflow: hidden;
+  cursor: crosshair;
+
+  border-radius: 2em 2em 0 0;
+  box-shadow: 0 0 2em rgba(0, 0, 0, 0.25);
+}
+
+.map-pin {
+  position: absolute;
+  width: 14px; height: 14px;
+  background-color: #fa0000;
+  border: 2px solid white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+
+.handle-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1.7em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 12;
+
+  cursor: pointer;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 100%);
+}
+
+.handle-bar {
+  width: 6em;
+  height: 0.3em;
+  background-color: white;
+  border-radius: 2em;
+  opacity: 0.9;
+}
+
+
+.guess-button {
+  height: 60px;
+  background-color: #28a745;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+.guess-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
 }
 
 

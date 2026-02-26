@@ -1,18 +1,152 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Game{% endblock %}
+{% block title %} {{ difficulty }} Game{% endblock %}
 
 {% block body %}
 
-<h1>Game</h1>
-<h2>{{ difficulty }}</h2>
+<div id="main-content" onclick="closeMap()">
+    <div class="game-navbar">
+        <div>
+            <p>1/5</p>
+            <p>ROUND</p>
+        </div>
 
-<div {{ stimulus_controller('countup', {
-    start: date('c')
-}) }} class="blurred-div">
-    <p>Time elapsed: <span {{ stimulus_target('countup', 'display') }}>0s</span></p>
+        <div>
+            <p>2345</p>
+            <p>SCORE</p>
+        </div>
+
+        <div>
+            <div {{ stimulus_controller('countup', {
+                start: date('c')
+            }) }}>
+                <p><span {{ stimulus_target('countup', 'display') }}>0s</span></p>
+            </div>
+            <p>TIME</p>
+        </div>
+    </div>
+
+
+    <div class="location-container">
+        <img src="{{ asset('test.png') }}" class="location-image">
+    </div>
 </div>
 
-<a href="{{ path('app_home') }}" class="diff-btn">Home</a>
+
+<div class="map-container" id="mapContainer">
+    <div class="map-wrapper" onclick="placePin(event)" id="mapWrapper">
+        <div class="handle-container" onclick="document.getElementById('mapContainer').classList.toggle('expanded')">
+            <div class="handle-bar"></div>
+        </div>
+
+        <img src="{{ asset('map.png') }}" class="map-image">
+        <div id="mapPin" class="map-pin"></div>
+    </div>
+
+    <button id="guessBtn" class="guess-button" onclick="submitGuess()" disabled>GUESS</button>
+</div>
+
+{% block javascripts %}
+      {{ parent() }}
+      {{ encore_entry_script_tags('app.js') }}
+      <script>
+      function closeMap() {
+          const map = document.getElementById('mapContainer');
+          if (map.classList.contains('expanded')) {
+              map.classList.remove('expanded');
+          }
+      }
+
+      const mapContainer = document.getElementById('mapContainer');
+      const pin = document.getElementById('mapPin');
+      const guessBtn = document.getElementById('guessBtn');
+      const mapWrapper = document.getElementById('mapWrapper');
+
+      let currentGuessX = null;
+      let currentGuessY = null;
+
+      // 1. Place the pin and calculate coordinates
+      function placePin(event) {
+        const mapContainer = document.getElementById('mapContainer');
+        const pin = document.getElementById('mapPin');
+        const guessBtn = document.getElementById('guessBtn');
+        const mapWrapper = document.getElementById('mapWrapper');
+
+        // Get the bounds of the map wrapper
+        const rect = mapWrapper.getBoundingClientRect();
+
+        // Calculate raw pixels from the top-left of the wrapper
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        // Convert to percentages (0 to 100) for screen-agnostic saving
+        currentGuessX = (x / rect.width) * 100;
+        currentGuessY = (y / rect.height) * 100;
+
+        // Move the visual pin
+        pin.style.left = `${currentGuessX}%`;
+        pin.style.top = `${currentGuessY}%`;
+        pin.style.display = 'block';
+
+        // Enable the GUESS button
+        guessBtn.disabled = false;
+      }
+
+      // 2. Send the data to Symfony
+      function submitGuess() {
+        if (currentGuessX === null || currentGuessY === null) return;
+
+        const mapContainer = document.getElementById('mapContainer');
+        const pin = document.getElementById('mapPin');
+        const guessBtn = document.getElementById('guessBtn');
+        const mapWrapper = document.getElementById('mapWrapper');
+
+        // Disable button while processing
+        guessBtn.disabled = true;
+        guessBtn.innerText = "GUESSING...";
+
+        // Format data for standard POST request
+        const params = new URLSearchParams();
+        params.append('x', currentGuessX);
+        params.append('y', currentGuessY);
+
+        // Send request to your Symfony route
+        fetch("{{ path('game_guess') }}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: params
+        })
+        .then(response => {
+          // If Symfony triggers the game_finish redirect, follow it!
+          if (response.redirected) {
+            window.location.href = response.url;
+            return null;
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data) {
+            // Handle the next round! (e.g., reset pin, update score UI)
+            alert(`You scored ${data.points} points! Total: ${data.total_score}`);
+
+            // Reset UI for next round
+            pin.style.display = 'none';
+            guessBtn.disabled = true;
+            guessBtn.innerText = "GUESS";
+            currentGuessX = null;
+            currentGuessY = null;
+            closeMap();
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          guessBtn.disabled = false;
+          guessBtn.innerText = "GUESS";
+        });
+      }
+      </script>
+{% endblock %}
 
 {% endblock %}
