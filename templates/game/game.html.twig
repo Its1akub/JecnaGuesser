@@ -7,22 +7,22 @@
 <div id="main-content" onclick="closeMap()">
     <div class="game-navbar">
         <div>
-            <p>1/5</p>
-            <p>ROUND</p>
+            <p class="nav-element-info"><span id="round-counter">1</span>/5</p>
+            <p class="nav-element-header">ROUND</p>
         </div>
 
         <div>
-            <p>2345</p>
-            <p>SCORE</p>
+            <p class="nav-element-info" id="score-counter">0</p>
+            <p class="nav-element-header">SCORE</p>
         </div>
 
         <div>
             <div {{ stimulus_controller('countup', {
                 start: date('c')
             }) }}>
-                <p><span {{ stimulus_target('countup', 'display') }}>0s</span></p>
+                <p class="nav-element-info"><span {{ stimulus_target('countup', 'display') }}>0s</span></p>
             </div>
-            <p>TIME</p>
+            <p class="nav-element-header">TIME</p>
         </div>
     </div>
 
@@ -34,13 +34,15 @@
 
 
 <div class="map-container" id="mapContainer">
-    <div class="map-wrapper" onclick="placePin(event)" id="mapWrapper">
-        <div class="handle-container" onclick="document.getElementById('mapContainer').classList.toggle('expanded')">
-            <div class="handle-bar"></div>
-        </div>
+    <div class="handle-container" onclick="document.getElementById('mapContainer').classList.toggle('expanded')">
+        <div class="handle-bar"></div>
+    </div>
 
-        <img src="{{ asset('map.png') }}" class="map-image">
-        <div id="mapPin" class="map-pin"></div>
+    <div class="map-wrapper" id="mapWrapper">
+        <div class="image-container" id="imageContainer" onclick="placePin(event)">
+            <img src="{{ asset('map.png') }}" class="map-image">
+            <div id="mapPin" class="map-pin"></div>
+        </div>
     </div>
 
     <button id="guessBtn" class="guess-button" onclick="submitGuess()" disabled>GUESS</button>
@@ -57,94 +59,82 @@
           }
       }
 
-      const mapContainer = document.getElementById('mapContainer');
-      const pin = document.getElementById('mapPin');
-      const guessBtn = document.getElementById('guessBtn');
-      const mapWrapper = document.getElementById('mapWrapper');
-
       let currentGuessX = null;
       let currentGuessY = null;
 
-      // 1. Place the pin and calculate coordinates
       function placePin(event) {
-        const mapContainer = document.getElementById('mapContainer');
-        const pin = document.getElementById('mapPin');
-        const guessBtn = document.getElementById('guessBtn');
-        const mapWrapper = document.getElementById('mapWrapper');
+          const container = document.getElementById('imageContainer');
+          const rect = container.getBoundingClientRect();
 
-        // Get the bounds of the map wrapper
-        const rect = mapWrapper.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const y = event.clientY - rect.top;
 
-        // Calculate raw pixels from the top-left of the wrapper
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+          currentGuessX = (x / rect.width) * 100;
+          currentGuessY = (y / rect.height) * 100;
 
-        // Convert to percentages (0 to 100) for screen-agnostic saving
-        currentGuessX = (x / rect.width) * 100;
-        currentGuessY = (y / rect.height) * 100;
+          const pin = document.getElementById('mapPin');
+          pin.style.left = `${currentGuessX}%`;
+          pin.style.top = `${currentGuessY}%`;
+          pin.style.display = 'block';
 
-        // Move the visual pin
-        pin.style.left = `${currentGuessX}%`;
-        pin.style.top = `${currentGuessY}%`;
-        pin.style.display = 'block';
-
-        // Enable the GUESS button
-        guessBtn.disabled = false;
+          document.getElementById('guessBtn').disabled = false;
       }
 
-      // 2. Send the data to Symfony
       function submitGuess() {
-        if (currentGuessX === null || currentGuessY === null) return;
+          const mapContainer = document.getElementById('mapContainer');
+          const pin = document.getElementById('mapPin');
+          const guessBtn = document.getElementById('guessBtn');
+          const mapWrapper = document.getElementById('mapWrapper');
 
-        const mapContainer = document.getElementById('mapContainer');
-        const pin = document.getElementById('mapPin');
-        const guessBtn = document.getElementById('guessBtn');
-        const mapWrapper = document.getElementById('mapWrapper');
+          if (currentGuessX === null || currentGuessY === null) return;
 
-        // Disable button while processing
-        guessBtn.disabled = true;
-        guessBtn.innerText = "GUESSING...";
+          guessBtn.disabled = true;
+          guessBtn.innerText = "GUESSING...";
 
-        // Format data for standard POST request
-        const params = new URLSearchParams();
-        params.append('x', currentGuessX);
-        params.append('y', currentGuessY);
+          const params = new URLSearchParams();
+          params.append('x', currentGuessX);
+          params.append('y', currentGuessY);
 
-        // Send request to your Symfony route
-        fetch("{{ path('game_guess') }}", {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: params
-        })
-        .then(response => {
-          // If Symfony triggers the game_finish redirect, follow it!
-          if (response.redirected) {
-            window.location.href = response.url;
-            return null;
-          }
-          return response.json();
-        })
-        .then(data => {
-          if (data) {
-            // Handle the next round! (e.g., reset pin, update score UI)
-            alert(`You scored ${data.points} points! Total: ${data.total_score}`);
+          fetch("{{ path('game_guess') }}", {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: params
+          })
+          .then(async response => {
+              // Check if the response is actually JSON
+              const contentType = response.headers.get("content-type");
+              if (!contentType || !contentType.includes("application/json")) {
+                  // If we got HTML/Text instead of JSON, something went wrong on the server
+                  const text = await response.text();
+                  console.error("Server returned non-JSON:", text);
+                  throw new TypeError("Oops, the server didn't send JSON!");
+              }
+              return response.json();
+          })
+          .then(data => {
+              // Check if the game is over
+              if (data.is_finished) {
+                  window.location.href = data.redirect_url;
+                  return;
+              }
 
-            // Reset UI for next round
-            pin.style.display = 'none';
-            guessBtn.disabled = true;
-            guessBtn.innerText = "GUESS";
-            currentGuessX = null;
-            currentGuessY = null;
-            closeMap();
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          guessBtn.disabled = false;
-          guessBtn.innerText = "GUESS";
-        });
+              //alert(`Round Points: ${data.points}\nTotal Score: ${data.total_score}`);
+              document.getElementById('round-counter').innerText = data.next_round;
+              document.getElementById('score-counter').innerText = data.total_score;
+
+              // Reset UI
+              pin.style.display = 'none';
+              guessBtn.innerText = "GUESS";
+              currentGuessX = null;
+              currentGuessY = null;
+              closeMap();
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              alert("There was an error processing your guess. Check the console.");
+              guessBtn.disabled = false;
+              guessBtn.innerText = "GUESS";
+          });
       }
       </script>
 {% endblock %}

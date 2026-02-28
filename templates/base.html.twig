@@ -10,14 +10,14 @@
         <link rel="icon" href="{{ asset('jg_logo_large.svg') }}">
         {% block stylesheets %}
         {% endblock %}
-
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
     </head>
     <body>
         <div class="main">
             {% block body %}{% endblock %}
         </div>
     </body>
+
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
 </html>

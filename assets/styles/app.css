@@ -18,7 +18,7 @@ body {
     color: var(--white);
     background-color: var(--bg1);
 
-    background-image: radial-gradient(rgba(255, 255, 255, 0.04) 3px, transparent 0);
+    background-image: radial-gradient(rgba(255, 255, 255, 0.06) 3px, transparent 0);
     background-size: 1.2em 1.2em;
     background-position: -0.3em 0;
 }
@@ -155,22 +155,38 @@ h1 {
     flex-direction: row;
     justify-content: space-around;
 
-    width: 95%;
-    padding: 0.5em 0;
+    width: 90%;
+    padding: 0.5em 0.5em;
     margin: auto;
 
-    margin-bottom: 3em;
+    margin-top: -1.3em;
 
     border-radius: 10em;
     box-shadow: 0 0 1.2em black;
     backdrop-filter: blur(2px);
 }
 
+.nav-element-info {
+    font-size: 1.5em;
+    width: 100%;
+    color: var(--white);
+    font-weight: 800;
+}
+
+.nav-element-header {
+    font-size: 0.8em;
+    width: 100%;
+    color: var(--white2);
+    font-weight: 500;
+    font-style: italic;
+}
+
+
 
 .location-container {
-    width: 90%;
+    width: 93%;
     height: 0;
-    padding-bottom: 90%;
+    padding-bottom: 93%;
     overflow: hidden;
     margin: auto;
     position: absolute;
@@ -178,7 +194,7 @@ h1 {
     right: 0;
     left: 0;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-60%);
 
     border-radius: 1.75em;
     z-index: -1;
@@ -214,70 +230,100 @@ h1 {
     z-index: 100;
 }
 
+.map-container.expanded .guess-button {
+    display: block;
+}
+
 .map-image {
-    max-width: 100%;
+    width: 100%;
+    height: auto;
+    display: block;
     pointer-events: none;
 }
 
-.map-wrapper {
-  flex-grow: 1;
-  position: relative;
-  overflow: hidden;
-  cursor: crosshair;
+.image-container {
+    position: relative;
+    width: 100%;
+}
 
-  border-radius: 2em 2em 0 0;
-  box-shadow: 0 0 2em rgba(0, 0, 0, 0.25);
+.map-wrapper {
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+
+    border-radius: 2em 2em 0 0;
+    box-shadow: 0 0 2em rgba(0, 0, 0, 0.25);
 }
 
 .map-pin {
-  position: absolute;
-  width: 14px; height: 14px;
-  background-color: #fa0000;
-  border: 2px solid white;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  display: none;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    position: absolute;
+    width: 16px; height: 16px;
+    background-color: var(--primary);
+    border: 2px solid white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
 
 
 .handle-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 1.7em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 12;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1.7em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 12;
 
-  cursor: pointer;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 100%);
+    cursor: pointer;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 100%);
 }
 
 .handle-bar {
-  width: 6em;
-  height: 0.3em;
-  background-color: white;
-  border-radius: 2em;
-  opacity: 0.9;
+    width: 6em;
+    height: 0.3em;
+    background-color: white;
+    border-radius: 2em;
+    opacity: 0.9;
 }
 
 
 .guess-button {
-  height: 60px;
-  background-color: #28a745;
-  color: white;
-  font-size: 1.2rem;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  text-transform: uppercase;
+    display: none;
+    width: 100%;
+    height: 1.7em;
+    margin: auto;
+
+    cursor: pointer;
+    text-transform: uppercase;
+
+    font-size: 2em;
+    font-weight: 800;
+    text-shadow: 0 0 0.5em var(--secondary);
+    border: 0 solid rgba(255, 255, 255, 0.4);
+
+    color: var(--white);
+    background-color: var(--primary);
+    box-shadow: 0 0 1em var(--secondary);
+    z-index: 20;
+
+    transition: 100ms;
+}
+.guess-button:hover {
+    background-color: var(--secondary);
+    cursor: pointer;
 }
 .guess-button:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
+    background-color: #6c757d;
+    -moz-box-shadow: none;
+	box-shadow: none;
+    text-shadow: 0 0 0.5em var(--bg1);
+
+    cursor: not-allowed;
 }
 
 

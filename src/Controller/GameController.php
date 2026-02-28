@@ -28,7 +28,7 @@ class GameController extends AbstractController
 
         $session->set('game_start_time', time());
         $session->set('difficulty', strtolower($difficulty));
-        $session->set('current_round', 0);
+        $session->set('current_round', 1);
         $session->set('total_score', 0);
 
         $locationsForDifficulty = $em->getRepository(GameLocation::class)
@@ -56,12 +56,12 @@ class GameController extends AbstractController
         $currentRound = $session->get('current_round', 0);
 
         if (!isset($locationIds[$currentRound])) {
-            return new Response('Game finished', 400);
+            return $this->json(['error' => 'Game finished'], 400);
         }
 
         $location = $em->getRepository(GameLocation::class)->find($locationIds[$currentRound]);
         if (!$location) {
-            return new Response('Invalid location', 400);
+            return $this->json(['error' => 'Invalid location'], 400);
         }
 
         // Odhadnutý X/Y od frontendu
@@ -74,6 +74,7 @@ class GameController extends AbstractController
         // Max 5000 bodů, ztráta 2 bodů za 1 jednotku vzdálenosti
         $points = max(0, 5000 - ($distance * 2));
         $points = (int)min(5000, $points);
+        //$points = (int)5000;
 
         $totalScore = $session->get('total_score', 0) + $points;
         $session->set('total_score', $totalScore);
@@ -81,14 +82,14 @@ class GameController extends AbstractController
         $session->set('current_round', $currentRound + 1);
 
         // Konec hry po 5 kolech
-        if ($currentRound + 1 >= count($locationIds)) {
-            return $this->redirectToRoute('game_finish');
-        }
+        $isFinished = ($currentRound + 1 >= count($locationIds));
 
         return $this->json([
             'points' => $points,
             'total_score' => $totalScore,
-            'next_round' => $currentRound + 1
+            'next_round' => $currentRound + 1,
+            'is_finished' => $isFinished,
+            'redirect_url' => $this->generateUrl('game_finish')
         ]);
     }
 
