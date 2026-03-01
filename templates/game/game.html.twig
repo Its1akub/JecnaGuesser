@@ -7,12 +7,12 @@
 <div id="main-content" onclick="closeMap()">
     <div class="game-navbar">
         <div>
-            <p class="nav-element-info"><span id="round-counter">1</span>/5</p>
+            <p class="nav-element-info"><span id="roundCounter">1</span>/5</p>
             <p class="nav-element-header">ROUND</p>
         </div>
 
         <div>
-            <p class="nav-element-info" id="score-counter">0</p>
+            <p class="nav-element-info" id="scoreCounter">0</p>
             <p class="nav-element-header">SCORE</p>
         </div>
 
@@ -42,9 +42,13 @@
         <div class="image-container" id="imageContainer" onclick="placePin(event)">
             <img src="{{ asset('map.png') }}" class="map-image">
             <div id="mapPin" class="map-pin"></div>
+
+            <div id="actualPin" class="actual-pin"></div>
+            <div id="distanceLine" class="distance-line"></div>
         </div>
     </div>
 
+    <p id="guessPointsCointainer" class="guess-points"><span id="guessPoints">0</span> pts</p>
     <button id="guessBtn" class="guess-button" onclick="submitGuess()" disabled>GUESS</button>
 </div>
 
@@ -61,8 +65,11 @@
 
       let currentGuessX = null;
       let currentGuessY = null;
+      let roundOver = false;
 
       function placePin(event) {
+          if (roundOver) return;
+
           const container = document.getElementById('imageContainer');
           const rect = container.getBoundingClientRect();
 
@@ -81,6 +88,11 @@
       }
 
       function submitGuess() {
+          if (roundOver) {
+              reset();
+              return;
+          }
+
           const mapContainer = document.getElementById('mapContainer');
           const pin = document.getElementById('mapPin');
           const guessBtn = document.getElementById('guessBtn');
@@ -100,41 +112,76 @@
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
               body: params
           })
-          .then(async response => {
-              // Check if the response is actually JSON
-              const contentType = response.headers.get("content-type");
-              if (!contentType || !contentType.includes("application/json")) {
-                  // If we got HTML/Text instead of JSON, something went wrong on the server
-                  const text = await response.text();
-                  console.error("Server returned non-JSON:", text);
-                  throw new TypeError("Oops, the server didn't send JSON!");
-              }
-              return response.json();
-          })
+          .then(response => response.json())
           .then(data => {
-              // Check if the game is over
               if (data.is_finished) {
                   window.location.href = data.redirect_url;
                   return;
               }
 
-              //alert(`Round Points: ${data.points}\nTotal Score: ${data.total_score}`);
-              document.getElementById('round-counter').innerText = data.next_round;
-              document.getElementById('score-counter').innerText = data.total_score;
+              document.getElementById('roundCounter').innerText = data.next_round;
+              document.getElementById('scoreCounter').innerText = data.total_score;
+              document.getElementById('guessPointsCointainer').style.display = 'block';
+              document.getElementById('guessPoints').innerText = data.points;
 
-              // Reset UI
-              pin.style.display = 'none';
-              guessBtn.innerText = "GUESS";
-              currentGuessX = null;
-              currentGuessY = null;
-              closeMap();
+              const actualPin = document.getElementById('actualPin');
+              actualPin.style.left = `${data.actual_x}%`;
+              actualPin.style.top = `${data.actual_y}%`;
+              actualPin.style.display = 'block';
+
+              drawLine(currentGuessX, currentGuessY, data.actual_x, data.actual_y);
+
+              guessBtn.disabled = false;
+              guessBtn.innerText = "NEXT";
+
+              roundOver = true;
           })
           .catch(error => {
               console.error('Error:', error);
-              alert("There was an error processing your guess. Check the console.");
               guessBtn.disabled = false;
               guessBtn.innerText = "GUESS";
           });
+      }
+
+      function reset() {
+          const pin = document.getElementById('mapPin');
+          const actualPin = document.getElementById('actualPin');
+          const line = document.getElementById('distanceLine');
+          const guessBtn = document.getElementById('guessBtn');
+
+          roundOver = false;
+
+          pin.style.display = 'none';
+          actualPin.style.display = 'none';
+          line.style.display = 'none';
+          document.getElementById('guessPointsCointainer').style.display = 'none';
+
+          guessBtn.disabled = true;
+          guessBtn.innerText = "GUESS";
+          currentGuessX = null;
+          currentGuessY = null;
+          closeMap();
+      }
+
+
+      function drawLine(x1Pct, y1Pct, x2Pct, y2Pct) {
+          const container = document.getElementById('imageContainer');
+          const rect = container.getBoundingClientRect();
+          const line = document.getElementById('distanceLine');
+
+          const x1 = (x1Pct / 100) * rect.width;
+          const y1 = (y1Pct / 100) * rect.height;
+          const x2 = (x2Pct / 100) * rect.width;
+          const y2 = (y2Pct / 100) * rect.height;
+
+          const length = Math.hypot(x2 - x1, y2 - y1);
+          const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
+
+          line.style.left = `${x1Pct}%`;
+          line.style.top = `${y1Pct}%`;
+          line.style.width = `${length}px`;
+          line.style.transform = `translateY(-50%) rotate(${angle}deg)`;
+          line.style.display = 'block';
       }
       </script>
 {% endblock %}

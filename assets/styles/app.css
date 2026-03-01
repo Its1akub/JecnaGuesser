@@ -265,6 +265,31 @@ h1 {
     transform: translate(-50%, -50%);
     display: none;
     box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    z-index: 2;
+}
+
+.actual-pin {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-color: #28a745;
+    border: 2px solid white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    z-index: 2;
+}
+
+.distance-line {
+    position: absolute;
+    height: 0px;
+    background-color: white;
+    border-top: 5px dashed black;
+    transform-origin: 0 50%;
+    display: none;
+    z-index: 1;
+    pointer-events: none;
 }
 
 
@@ -277,7 +302,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 12;
+    z-index: 10;
 
     cursor: pointer;
     background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 100%);
@@ -289,6 +314,23 @@ h1 {
     background-color: white;
     border-radius: 2em;
     opacity: 0.9;
+}
+
+.guess-points {
+    display: none;
+
+    font-size: 2.5em;
+    font-weight: 800;
+    color: var(--primary);
+
+    position: absolute;
+    bottom: 1.2em;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+
+    /*text-shadow: 0 0 0.6em var(--secondary);*/
 }
 
 
