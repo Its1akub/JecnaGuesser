@@ -17,23 +17,24 @@
         </div>
 
         <div>
-            <div {{ stimulus_controller('countup', {
-                start: date('c')
-            }) }}>
-                <p class="nav-element-info"><span {{ stimulus_target('countup', 'display') }}>0s</span></p>
+            <div {{ stimulus_controller('countup') }}
+                data-action="game:pause@window->countup#pause game:resume@window->countup#resume">
+                <p class="nav-element-info">
+                    <span {{ stimulus_target('countup', 'display') }}>0s</span>
+                </p>
             </div>
             <p class="nav-element-header">TIME</p>
         </div>
 
         <div class="home-wrapper">
-            <a href="{{ path('app_home') }}" class="home-btn">H</a>
+            <a href="{{ path('app_home') }}" class="home-btn"><img src="{{ asset('home.svg') }}" alt="Home" class="home-icon"/></a>
         </div>
 
     </div>
 
 
     <div class="location-container">
-        <img src="{{ asset('locations/' ~ locations[0].getImagePath()) }}" class="location-image">
+        <img src="{{ asset('locations/' ~ location.getImagePath()) }}" class="location-image" id="locationImage">
     </div>
 </div>
 
@@ -44,11 +45,11 @@
     </div>
 
     <div class="floor-selector" id="floorSelector">
-        <button class="floor-btn active" onclick="changeFloor(0, this)">0</button>
-        <button class="floor-btn" onclick="changeFloor(1, this)">1</button>
-        <button class="floor-btn" onclick="changeFloor(2, this)">2</button>
-        <button class="floor-btn" onclick="changeFloor(3, this)">3</button>
-        <button class="floor-btn" onclick="changeFloor(4, this)">4</button>
+        <button id="floor0" class="floor-btn active" onclick="changeFloor(0, this)">0</button>
+        <button id="floor1" class="floor-btn" onclick="changeFloor(1, this)">1</button>
+        <button id="floor2" class="floor-btn" onclick="changeFloor(2, this)">2</button>
+        <button id="floor3" class="floor-btn" onclick="changeFloor(3, this)">3</button>
+        <button id="floor4" class="floor-btn" onclick="changeFloor(4, this)">4</button>
     </div>
 
     <div class="map-wrapper" id="mapWrapper">
@@ -61,7 +62,7 @@
         </div>
     </div>
 
-    <p id="guessPointsCointainer" class="guess-points"><span id="guessPoints">0</span> pts</p>
+    <p id="guessPointsCointainer" class="guess-points-cointainer"><span id="guessPoints" class="guess-points">0</span> pts</p>
     <button id="guessBtn" class="guess-button" onclick="submitGuess()" disabled>GUESS</button>
 </div>
 
@@ -82,6 +83,7 @@
 
       let roundOver = false;
       let finished = null;
+      let submitResponse = null;
 
       function placePin(event) {
           if (roundOver) return;
@@ -105,9 +107,10 @@
 
       function submitGuess() {
           if (roundOver) {
-              if (finished != null) {
-                  window.location.href = finished;
+              if (submitResponse.is_finished) {
+                  window.location.href = submitResponse.redirect_url;
               }
+              window.dispatchEvent(new CustomEvent('game:resume'));
               reset();
               return;
           }
@@ -134,12 +137,10 @@
           })
           .then(response => response.json())
           .then(data => {
-              if (data.is_finished) {
-                  finished = data.is_finished;
-              }
+              submitResponse = data;
 
-              document.getElementById('roundCounter').innerText = data.next_round + 1;
-              document.getElementById('scoreCounter').innerText = data.total_score;
+              window.dispatchEvent(new CustomEvent('game:pause'));
+
               document.getElementById('guessPointsCointainer').style.display = 'block';
               document.getElementById('guessPoints').innerText = data.points;
               document.getElementById('mapContainer').classList.add('guessed');
@@ -152,7 +153,9 @@
               drawLine(currentGuessX, currentGuessY, data.actual_x, data.actual_y);
 
               guessBtn.disabled = false;
-              guessBtn.innerText = "NEXT";
+              guessBtn.innerText = data.is_finished ? "FINISH" : "NEXT";
+
+              document.getElementById(`floor${data.actual_floor}`).classList.add('correct-floor');
 
               roundOver = true;
           })
@@ -183,6 +186,17 @@
           currentGuessX = null;
           currentGuessY = null;
           closeMap();
+
+          if (submitResponse == null) return;
+          document.getElementById('roundCounter').innerText = submitResponse.next_round + 1;
+          document.getElementById('scoreCounter').innerText = submitResponse.total_score;
+
+          document.getElementById(`floor${submitResponse.actual_floor}`).classList.remove('correct-floor');
+
+          const locImg = document.getElementById('locationImage');
+          locImg.src = `/locations/${submitResponse.next_location_path}`;
+
+          //window.dispatchEvent(new CustomEvent('game:resume'));
       }
 
       function drawLine(x1Pct, y1Pct, x2Pct, y2Pct) {

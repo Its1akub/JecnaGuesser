@@ -47,7 +47,7 @@ class GameController extends AbstractController
 
         return $this->render('game/game.html.twig', [
             'difficulty' => ucfirst($difficulty),
-            'locations' => $gameLocations
+            'location' => $gameLocations[0]
         ]);
     }
 
@@ -63,7 +63,7 @@ class GameController extends AbstractController
 
         $location = $em->getRepository(GameLocation::class)->find($locationIds[$currentRound]);
         if (!$location) {
-          return $this->json(['error' => 'Invalid location'], 400);
+            return $this->json(['error' => 'Invalid location'], 400);
         }
 
         // Odhadnutý X/Y od frontendu
@@ -75,7 +75,7 @@ class GameController extends AbstractController
         $distance = sqrt(pow($xGuess - $location->getX(), 2) + pow($yGuess - $location->getY(), 2));
 
         // Max 5000 bodů, ztráta 2 bodů za 1 jednotku vzdálenosti
-        $points = max(0, 5000 - ($distance * 2));
+        $points = max(0, 5000 - ($distance * 100));
         $points = (int)min(5000, $points);
 
         $totalScore = $session->get('total_score', 0) + $points;
@@ -86,6 +86,12 @@ class GameController extends AbstractController
         // Konec hry po 5 kolech
         $isFinished = ($currentRound + 1 >= count($locationIds));
 
+        $nextLocationPath = null;
+        if (!$isFinished) {
+            $nextLocation = $em->getRepository(GameLocation::class)->find($locationIds[$currentRound + 1]);
+            $nextLocationPath = $nextLocation ? $nextLocation->getImagePath() : null;
+        }
+
         return $this->json([
             'points' => $points,
             'total_score' => $totalScore,
@@ -93,7 +99,9 @@ class GameController extends AbstractController
             'is_finished' => $isFinished,
             'redirect_url' => $this->generateUrl('game_finish'),
             'actual_x' => $location->getX(),
-            'actual_y' => $location->getY()
+            'actual_y' => $location->getY(),
+            'actual_floor' => 0,
+            'next_location_path' => $nextLocationPath
         ]);
     }
 

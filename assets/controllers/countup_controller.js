@@ -1,21 +1,60 @@
+// assets/controllers/countup_controller.js
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
     static targets = ['display'];
-    static values = { start: String };
 
     connect() {
-        this.startTime = new Date().getTime();
-        this.update();
-        this.timer = setInterval(() => this.update(), 1000);
+        this.totalMs = 0;
+        this.running = false;
+        this.timer = null;
+        this.resume();
     }
 
     disconnect() {
-        clearInterval(this.timer);
+        this.stopTimer();
     }
 
-    update() {
-        const now = new Date().getTime();
-        this.displayTarget.innerHTML = `${ Math.floor((now - this.startTime) / 1000)}s`;
+    pause() {
+        if (!this.running) return;
+        this.stopTimer();
+        this.accumulateTime();
+        this.draw();
+    }
+
+    resume() {
+        if (this.running) return;
+
+        this.stopTimer();
+
+        this.running = true;
+        this.lastTimestamp = Date.now();
+
+        this.timer = setInterval(() => {
+            this.accumulateTime();
+            this.draw();
+        }, 200);
+    }
+
+    accumulateTime() {
+        const now = Date.now();
+        this.totalMs += (now - this.lastTimestamp);
+        this.lastTimestamp = now;
+    }
+
+    draw() {
+        const seconds = Math.floor(this.totalMs / 1000);
+        const newText = `${seconds}s`;
+        if (this.displayTarget.innerHTML !== newText) {
+            this.displayTarget.innerHTML = newText;
+        }
+    }
+
+    stopTimer() {
+        this.running = false;
+        if (this.timer) {
+            clearInterval(this.timer);
+            this.timer = null;
+        }
     }
 }
