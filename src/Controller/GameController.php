@@ -28,7 +28,7 @@ class GameController extends AbstractController
 
         $session->set('game_start_time', time());
         $session->set('difficulty', strtolower($difficulty));
-        $session->set('current_round', 1);
+        $session->set('current_round', 0);
         $session->set('total_score', 0);
 
         $locationsForDifficulty = $em->getRepository(GameLocation::class)
@@ -55,7 +55,7 @@ class GameController extends AbstractController
     public function guess(Request $request, SessionInterface $session, EntityManagerInterface $em): Response
     {
         $locationIds = $session->get('game_locations', []);
-        $currentRound = $session->get('current_round', 1);
+        $currentRound = $session->get('current_round', 0);
 
         if (!isset($locationIds[$currentRound])) {
             return $this->json(['error' => 'Game finished'], 400);
@@ -69,6 +69,7 @@ class GameController extends AbstractController
         // Odhadnutý X/Y od frontendu
         $xGuess = (float)$request->request->get('x');
         $yGuess = (float)$request->request->get('y');
+        $floorGuess = (float)$request->request->get('floor');
 
 
         $distance = sqrt(pow($xGuess - $location->getX(), 2) + pow($yGuess - $location->getY(), 2));
@@ -76,7 +77,6 @@ class GameController extends AbstractController
         // Max 5000 bodů, ztráta 2 bodů za 1 jednotku vzdálenosti
         $points = max(0, 5000 - ($distance * 2));
         $points = (int)min(5000, $points);
-        //$points = (int)rand(0, 5000);
 
         $totalScore = $session->get('total_score', 0) + $points;
         $session->set('total_score', $totalScore);

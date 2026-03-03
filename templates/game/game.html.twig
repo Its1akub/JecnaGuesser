@@ -24,23 +24,36 @@
             </div>
             <p class="nav-element-header">TIME</p>
         </div>
+
+        <div class="home-wrapper">
+            <a href="{{ path('app_home') }}" class="home-btn">H</a>
+        </div>
+
     </div>
 
 
     <div class="location-container">
-        <img src="{{ asset('test.png') }}" class="location-image">
+        <img src="{{ asset('locations/' ~ locations[0].getImagePath()) }}" class="location-image">
     </div>
 </div>
 
 
 <div class="map-container" id="mapContainer">
     <div class="handle-container" onclick="document.getElementById('mapContainer').classList.toggle('expanded')">
-        <div class="handle-bar"></div>
+        <div class="chevron"></div>
+    </div>
+
+    <div class="floor-selector" id="floorSelector">
+        <button class="floor-btn active" onclick="changeFloor(0, this)">0</button>
+        <button class="floor-btn" onclick="changeFloor(1, this)">1</button>
+        <button class="floor-btn" onclick="changeFloor(2, this)">2</button>
+        <button class="floor-btn" onclick="changeFloor(3, this)">3</button>
+        <button class="floor-btn" onclick="changeFloor(4, this)">4</button>
     </div>
 
     <div class="map-wrapper" id="mapWrapper">
         <div class="image-container" id="imageContainer" onclick="placePin(event)">
-            <img src="{{ asset('map.png') }}" class="map-image">
+            <img src="{{ asset('maps/np1.png') }}" class="map-image" id="mapImage">
             <div id="mapPin" class="map-pin"></div>
 
             <div id="actualPin" class="actual-pin"></div>
@@ -65,7 +78,10 @@
 
       let currentGuessX = null;
       let currentGuessY = null;
+      let currentFloor = 0;
+
       let roundOver = false;
+      let finished = null;
 
       function placePin(event) {
           if (roundOver) return;
@@ -89,6 +105,9 @@
 
       function submitGuess() {
           if (roundOver) {
+              if (finished != null) {
+                  window.location.href = finished;
+              }
               reset();
               return;
           }
@@ -106,6 +125,7 @@
           const params = new URLSearchParams();
           params.append('x', currentGuessX);
           params.append('y', currentGuessY);
+          params.append('floor', currentFloor);
 
           fetch("{{ path('game_guess') }}", {
               method: 'POST',
@@ -115,14 +135,14 @@
           .then(response => response.json())
           .then(data => {
               if (data.is_finished) {
-                  window.location.href = data.redirect_url;
-                  return;
+                  finished = data.is_finished;
               }
 
-              document.getElementById('roundCounter').innerText = data.next_round;
+              document.getElementById('roundCounter').innerText = data.next_round + 1;
               document.getElementById('scoreCounter').innerText = data.total_score;
               document.getElementById('guessPointsCointainer').style.display = 'block';
               document.getElementById('guessPoints').innerText = data.points;
+              document.getElementById('mapContainer').classList.add('guessed');
 
               const actualPin = document.getElementById('actualPin');
               actualPin.style.left = `${data.actual_x}%`;
@@ -156,13 +176,14 @@
           line.style.display = 'none';
           document.getElementById('guessPointsCointainer').style.display = 'none';
 
+          document.getElementById('mapContainer').classList.remove('guessed');
+
           guessBtn.disabled = true;
           guessBtn.innerText = "GUESS";
           currentGuessX = null;
           currentGuessY = null;
           closeMap();
       }
-
 
       function drawLine(x1Pct, y1Pct, x2Pct, y2Pct) {
           const container = document.getElementById('imageContainer');
@@ -182,6 +203,28 @@
           line.style.width = `${length}px`;
           line.style.transform = `translateY(-50%) rotate(${angle}deg)`;
           line.style.display = 'block';
+      }
+
+
+      function changeFloor(floorNum, buttonElement) {
+          if (roundOver) return;
+
+          currentFloor = floorNum;
+
+          const img = document.getElementById('mapImage');
+          img.src = `/maps/np${floorNum + 1}.png`;
+
+          document.querySelectorAll('.floor-btn').forEach(btn => {
+              btn.classList.remove('active');
+          });
+          buttonElement.classList.add('active');
+
+          const pin = document.getElementById('mapPin');
+          pin.style.display = 'none';
+          currentGuessX = null;
+          currentGuessY = null;
+
+          document.getElementById('guessBtn').disabled = true;
       }
       </script>
 {% endblock %}
