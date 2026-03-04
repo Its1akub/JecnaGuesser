@@ -163,6 +163,7 @@ h1 {
     flex-direction: row;
     justify-content: space-around;
 
+    max-width: 500px;
     width: 93%;
     padding: 0.5em 0em 0.5em 0.7em;
     margin: auto;
@@ -307,6 +308,9 @@ h1 {
     overflow-x: hidden;
     position: relative;
 }
+.map-wrapper:hover {
+    cursor: crosshair;
+}
 
 .map-pin {
     position: absolute;
@@ -370,6 +374,7 @@ h1 {
 }
 
 .chevron {
+    margin: auto;
     width: 1.2em;
     height: 1.2em;
     border-right: 6px solid #fff;
@@ -383,6 +388,19 @@ h1 {
     width: 0.8em;
     height: 0.8em;
     transform: translateY(-25%) rotate(45deg);
+}
+
+.chevron-container {
+    width: 5em;
+    padding: 0.2em;
+    background-color: rgba(0, 0, 0, 0.25);
+
+    border-radius: 2em;
+}
+.map-container.expanded .chevron-container {
+    width: 4em;
+    padding: 0.08em;
+    background-color: rgba(0, 0, 0, 0.15);
 }
 
 
@@ -496,6 +514,38 @@ h1 {
     cursor: not-allowed;
 }
 
+
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2em;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.leaderboard-table th, .leaderboard-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.leaderboard-table th {
+    background: rgba(0, 0, 0, 0.3);
+    color: #aaa;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.rank-1 {
+    background: rgba(255, 215, 0, 0.1);
+    font-size: 1.1rem;
+}
+
+.badge-hard { color: #ff4d4d; font-weight: bold; }
+.badge-normal { color: #4dadff; }
+.badge-easy { color: #4dff88; }
 
 
 @media (min-width: 768px) {
