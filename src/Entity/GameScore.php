@@ -19,6 +19,12 @@ class GameScore
     #[ORM\Column(type: 'integer')]
     private int $Score;
 
+    #[ORM\Column(type: 'integer')]
+    private int $time;
+
+    #[ORM\Column(type: 'string', length: 50)]
+    private string $difficulty;
+
     #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $playedAt;
 
@@ -46,6 +52,28 @@ class GameScore
     public function setScore(int $score): self
     {
         $this->Score = $score;
+        return $this;
+    }
+
+    public function getTime(): int
+    {
+        return $this->time;
+    }
+
+    public function setTime(int $time): self
+    {
+        $this->time = $time;
+        return $this;
+    }
+
+    public function getDifficulty(): string
+    {
+        return $this->difficulty;
+    }
+
+    public function setDifficulty(string $difficulty): self
+    {
+        $this->difficulty = $difficulty;
         return $this;
     }
 

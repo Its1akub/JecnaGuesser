@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Filesystem\Filesystem;
 
 class GameController extends AbstractController
 {
@@ -44,10 +45,10 @@ class GameController extends AbstractController
         // Uložíme ID lokací do session
         $session->set('game_locations', array_map(fn($loc) => $loc->getId(), $gameLocations));
 
-
         return $this->render('game/game.html.twig', [
             'difficulty' => ucfirst($difficulty),
-            'location' => $gameLocations[0]
+            'location_path' => $gameLocations[0]->getImagePath()
+            //'location_path' => 'L' . strval(73) . ".jpg"
         ]);
     }
 
@@ -70,6 +71,10 @@ class GameController extends AbstractController
         $xGuess = (float)$request->request->get('x');
         $yGuess = (float)$request->request->get('y');
         $floorGuess = (float)$request->request->get('floor');
+
+        //$fs = new Filesystem();
+        //$fs->appendToFile("logs.txt", sprintf("(%f, %f, %u, '%s', 'easy'),\n", $xGuess, $yGuess, $floorGuess, "L" . strval($currentRound + 73) . ".jpg"));
+
 
 
         $distance = sqrt(pow($xGuess - $location->getX(), 2) + pow($yGuess - $location->getY(), 2));
@@ -100,16 +105,9 @@ class GameController extends AbstractController
             'redirect_url' => $this->generateUrl('game_finish'),
             'actual_x' => $location->getX(),
             'actual_y' => $location->getY(),
-            'actual_floor' => 0,
+            'actual_floor' => $location->getFloor(),
             'next_location_path' => $nextLocationPath
         ]);
-    }
-
-
-    #[Route('/game/finish', name: 'game_finish', methods: ['GET'])]
-    public function finish(): Response
-    {
-        return $this->render('game/form.html.twig');
     }
 
     #[Route('/game/save', name: 'game_save', methods: ['POST'])]
@@ -118,24 +116,30 @@ class GameController extends AbstractController
         $name = trim($request->request->get('playerName'));
         $score = $session->get('total_score', 0);
 
+        $time = $session->get('total_time', 0);
+        $difficulty = $session->get('difficulty', 'N/A');
+
         if (!$name || strlen($name) > 100) {
             return new Response('Invalid name', 400);
+        }
+        if (!$score || $score <= 0) {
+            return new Response('No points', 400);
         }
 
         $gameScore = new GameScore();
         $gameScore
             ->setPlayerName($name)
             ->setScore($score)
-            ->setPlayedAt(new DateTimeImmutable());
+            ->setTime($time)
+            ->setDifficulty($difficulty)
+            ->setPlayedAt(new \DateTimeImmutable());
 
         $em->persist($gameScore);
         $em->flush();
 
         $session->invalidate();
 
-        return $this->render('game/save.html.twig', [
-            'score' => $score
-        ]);
+        return $this->redirectToRoute('app_leaderboard');
     }
 
 }
