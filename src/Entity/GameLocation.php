@@ -20,18 +20,13 @@ class GameLocation
     private float $y;
 
     #[ORM\Column(type: 'integer')]
-    private int $timeLimit;
+    private int $floor;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $imagePath;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $difficulty;
-
-    public function __construct()
-    {
-        $this->setTimeLimit(300); // seconds = 5 min
-    }
 
 
     public function getId(): ?int
@@ -62,14 +57,14 @@ class GameLocation
         return $this;
     }
 
-    public function getTimeLimit(): int
+    public function getFloor(): int
     {
-        return $this->timeLimit;
+        return $this->floor;
     }
 
-    public function setTimeLimit(int $seconds): self
+    public function setFloor(int $floor): self
     {
-        $this->timeLimit = $seconds;
+        $this->floor = $floor;
         return $this;
     }
 
