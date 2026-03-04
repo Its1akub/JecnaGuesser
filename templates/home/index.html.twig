@@ -6,9 +6,9 @@
 
 <img src="{{ asset('jg_logo_large.svg') }}" alt="Logo" class="home-logo"/>
 <h1 class="title-name">Ječná Guesser</h1>
-<p>From a picture, guess where you are in SPŠE Ječná.</p>
+<p>Guess where you are in SPŠE Ječná.</p>
 
-<a href="{{ path('app_leaderboard') }}" class="diff-btn">Leaderboard</a>
+<a href="{{ path('app_leaderboard', {difficulty: 'easy'}) }}" class="diff-btn">Leaderboard</a>
 
 <div data-controller="difficulty" class="start-area">
     <div class="blurred-div">

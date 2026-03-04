@@ -1,42 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Leaderboard{% endblock %}
+{% block title %}Leaderboard {{ difficulty|capitalize }}{% endblock %}
 
 {% block body %}
-<div class="leaderboard-container">
-    <h1 class="title-name">Leaderboard</h1>
 
-    <table class="leaderboard-table">
-        <thead>
-            <tr>
-                <th>Rank</th>
-                <th>Player</th>
-                <th>Score</th>
-                <th>Time</th>
-                <th>Difficulty</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for score in scores %}
-                <tr class="rank-{{ loop.index }}">
-                    <td>
-                        {% if loop.index == 1 %}🥇{% elseif loop.index == 2 %}🥈{% elseif loop.index == 3 %}🥉{% else %}{{ loop.index }}{% endif %}
-                    </td>
-                    <td><strong>{{ score.playerName }}</strong></td>
-                    <td>{{ score.score|number_format }} pts</td>
-                    <td>{{ score.time }}s</td>
-                    <td><span class="badge-{{ score.difficulty|lower }}">{{ score.difficulty|capitalize }}</span></td>
-                    <td>{{ score.playedAt|date('d/m/Y') }}</td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="6">No scores yet. Be the first!</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="leaderboard-bar">
+    <h1 class="leaderboard-title">Leaderboard</h1>
 
-    <a href="{{ path('app_home') }}" class="diff-btn">Home</a>
+    <div class="filter-group">
+        <a href="{{ path('app_leaderboard', {difficulty: 'easy'}) }}"
+           class="filter-button {{ difficulty == 'easy' ? 'active' : '' }}">Easy</a>
+        <a href="{{ path('app_leaderboard', {difficulty: 'medium'}) }}"
+           class="filter-button {{ difficulty == 'medium' ? 'active' : '' }}">Medium</a>
+        <a href="{{ path('app_leaderboard', {difficulty: 'hard'}) }}"
+           class="filter-button {{ difficulty == 'hard' ? 'active' : '' }}">Hard</a>
+    </div>
 </div>
+
+<table class="leaderboard-table">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Player</th>
+            <th>Score</th>
+            <th>Time</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for score in scores %}
+            <tr class="rank-{{ loop.index }}">
+                <td>{% if loop.index == 1 %}🥇{% elseif loop.index == 2 %}🥈{% elseif loop.index == 3 %}🥉{% else %}{{ loop.index }}{% endif %}</td>
+                <td><strong>{{ score.playerName }}</strong></td>
+                <td>{{ score.score|number_format }}</td>
+                <td>{{ score.time }}s</td>
+                <td>{{ score.playedAt|date('d/m/Y') }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5" style="text-align:center;">No scores found for this difficulty.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{{ path('app_home') }}" class="diff-btn">Home</a>
+
 {% endblock %}

@@ -78,10 +78,10 @@ class GameController extends AbstractController
 
 
         $distance = sqrt(pow($xGuess - $location->getX(), 2) + pow($yGuess - $location->getY(), 2));
+        $floorDistance = abs($floorGuess - $location->getFloor());
 
-        // Max 5000 bodů, ztráta 2 bodů za 1 jednotku vzdálenosti
-        $points = max(0, 5000 - ($distance * 100));
-        $points = (int)min(5000, $points);
+
+        $points = $this->calculateScore($distance, $floorDistance);
 
         $totalScore = $session->get('total_score', 0) + $points;
         $session->set('total_score', $totalScore);
@@ -108,6 +108,29 @@ class GameController extends AbstractController
             'actual_floor' => $location->getFloor(),
             'next_location_path' => $nextLocationPath
         ]);
+    }
+
+    public function calculateScore($distance, $floorDistance) {
+        $maxPoints = 5000 - ($floorDistance * 1000);
+        $lowerLimit = 2.5;
+        $upperLimit = 60.0;
+
+        if ($distance <= $lowerLimit) {
+            return $maxPoints;
+        }
+        if ($distance >= $upperLimit) {
+            return 0;
+        }
+
+        $normalizedDist = ($distance - $lowerLimit) / ($upperLimit - $lowerLimit);
+
+        /**
+         * Exponential Decay Formula: Score = Max * e^(-k * dist)
+         * We adjust it so it hits exactly 0 at the upper limit.
+         * Higher 'k' = steeper drop. 2.0 is a "slight" decay.
+         */
+        $k = 1.25;
+        return (int)round($maxPoints * (exp(-$k * $normalizedDist) - exp(-$k)) / (1 - exp(-$k)));
     }
 
     #[Route('/game/save', name: 'game_save', methods: ['POST'])]
@@ -139,7 +162,7 @@ class GameController extends AbstractController
 
         $session->invalidate();
 
-        return $this->redirectToRoute('app_leaderboard');
+        return $this->redirectToRoute('app_leaderboard', ['difficulty' => $difficulty]);
     }
 
 }

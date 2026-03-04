@@ -516,26 +516,157 @@ h1 {
 
 
 
+.stats-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 0.5em;
+
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 0.12em solid rgba(255, 255, 255, 0.08);
+
+    width: 70%;
+    max-width: 300px;
+    padding: 1em 0;
+    margin: auto;
+
+    margin-bottom: 3em;
+
+    border-radius: 1.5em;
+    box-shadow: 0 0 1.2em black;
+    backdrop-filter: blur(2px);
+}
+
+.score-highlight {
+    font-size: 2.25em;
+    text-shadow: 0 0 1em var(--primary);
+}
+
+.save-score-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1em;
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 4.5em;
+    margin-inline: auto;
+}
+
+.name-input {
+    font-family: "Google Sans", sans-serif;
+    font-size: 1.25em;
+    font-weight: 500;
+
+    width: 8em;
+    max-width: 60%;
+    padding: 0.3em 1em;
+
+    color: var(--white);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(2px);
+
+    border-radius: 0.8em;
+    border: 0.1em solid rgba(255, 255, 255, 0.1);
+}
+
+
+
+.leaderboard-bar {
+    position: sticky;
+    top: 1.5em;
+
+    width: 75%;
+    max-width: 550px;
+    margin: auto;
+    padding: 0.6em 1.8em;
+
+    color: var(--white);
+    background-color: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(3px);
+
+    border-radius: 2em;
+    border: 0.15em solid rgba(255, 255, 255, 0.1);
+
+    z-index: 15;
+}
+
+.leaderboard-title {
+    margin: 0;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 0.5em;
+}
+
+.filter-button {
+    font-size: 0.85em;
+    font-weight: 800;
+    color: var(--bg1);
+    background-color: var(--white);
+    text-decoration: none;
+
+    display: block;
+    padding: 0.15em 1em;
+    margin: auto;
+    width: 6em;
+    margin-block: 0.5em;
+
+    border-radius: 0.5em;
+    border: 0.04em solid var(--white);
+
+    transition: 300ms;
+}
+.filter-button:hover {
+    background-color: var(--white2);
+}
+.filter-button.active {
+    color: var(--white);
+    background-color: var(--primary);
+    border: 0.04em solid var(--primary);
+    box-shadow: 0 0 1.2em var(--primary);
+    border-radius: 2em;
+    z-index: 10;
+}
+
+
 .leaderboard-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 2em;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
+    margin-top: 1.5em;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 1em;
     overflow: hidden;
+
+    color: var(--white);
+    background-color: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(4px);
 }
 
+
 .leaderboard-table th, .leaderboard-table td {
-    padding: 15px;
+    font-size: 0.8rem;
+    padding: 13px 8px;
     text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    max-width: 150px;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .leaderboard-table th {
     background: rgba(0, 0, 0, 0.3);
     color: #aaa;
     text-transform: uppercase;
-    font-size: 0.8rem;
+    text-align: center;
+    font-size: 0.7rem;
 }
 
 .rank-1 {
@@ -543,9 +674,8 @@ h1 {
     font-size: 1.1rem;
 }
 
-.badge-hard { color: #ff4d4d; font-weight: bold; }
-.badge-normal { color: #4dadff; }
-.badge-easy { color: #4dff88; }
+
+
 
 
 @media (min-width: 768px) {

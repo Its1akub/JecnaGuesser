@@ -2,24 +2,38 @@
 
 {% block title %}Game Finish{% endblock %}
 
-{% block body %}
-<div class="finish-container">
-    <h1 class="title-name">Game Finished!</h1>
+{% block stylesheets %}
+    <link href="{{ asset('styles/postgame.css') }}" rel="stylesheet">
+{% endblock %}
 
-    <div class="stats-box">
-        <p><strong>Difficulty:</strong> {{ difficulty|capitalize }}</p>
-        <p><strong>Time:</strong> {{ time }} seconds</p>
-        <p><strong>Score:</strong> {{ score }} pts</p>
+{% block body %}
+
+<h1>Game Finished</h1>
+
+<div class="stats-container">
+    <div>
+        <p class="nav-element-info score-highlight"> {{ score }} pts</p>
+        <p class="nav-element-header">SCORE</p>
     </div>
 
-    <form action="{{ path('game_save') }}" method="POST" class="save-score-form">
-        <label for="playerName">Enter your name for the leaderboard:</label>
-        <input type="text" id="playerName" name="playerName" required maxlength="100" placeholder="e.g. GeoMaster99">
+    <div>
+        <p class="nav-element-info"> {{ time }} seconds</p>
+        <p class="nav-element-header">TIME</p>
+    </div>
 
-        <button type="submit" class="submit-btn">Save Score</button>
-    </form>
-
-    <br>
-    <a href="{{ path('app_home') }}" class="diff-btn">Home</a>
+    <div>
+        <p class="nav-element-info"> {{ difficulty|capitalize }} </p>
+        <p class="nav-element-header">DIFFICULTY</p>
+    </div>
 </div>
+
+<form action="{{ path('game_save') }}" method="POST" class="save-score-form">
+    <input type="text" id="playerName" name="playerName" required maxlength="100" placeholder="Username" class="name-input">
+
+    <button type="submit" class="play-btn">UPLOAD</button>
+    <a href="{{ path('app_home') }}" class="diff-btn">Home</a>
+</form>
+
+<br>
+
 {% endblock %}
