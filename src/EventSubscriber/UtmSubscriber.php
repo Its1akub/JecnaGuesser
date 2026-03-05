@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class UtmSubscriber implements EventSubscriberInterface
 {
-    private array $allowedSources = ['qr_plakat', 'discord', 'instagram'];
+    private array $allowedSources = ['qr_plakat', 'discord', 'instagram','github'];
     private array $allowedMediums = ['qr', 'social', 'direct'];
     private array $allowedCampaigns = ['spse2026'];
 
