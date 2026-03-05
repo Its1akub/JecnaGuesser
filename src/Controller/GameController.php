@@ -112,8 +112,8 @@ class GameController extends AbstractController
 
     public function calculateScore($distance, $floorDistance) {
         $maxPoints = 5000 - ($floorDistance * 1000);
-        $lowerLimit = 2.5;
-        $upperLimit = 60.0;
+        $lowerLimit = 1.5;
+        $upperLimit = 55.0;
 
         if ($distance <= $lowerLimit) {
             return $maxPoints;
@@ -129,7 +129,7 @@ class GameController extends AbstractController
          * We adjust it so it hits exactly 0 at the upper limit.
          * Higher 'k' = steeper drop. 2.0 is a "slight" decay.
          */
-        $k = 1.25;
+        $k = 0.8;
         return (int)round($maxPoints * (exp(-$k * $normalizedDist) - exp(-$k)) / (1 - exp(-$k)));
     }
 
