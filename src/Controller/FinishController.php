@@ -15,9 +15,7 @@ final class FinishController extends AbstractController
     {
         $score = $session->get('total_score', 0);
         $difficulty = $session->get('difficulty', 'N/A');
-        $time = $request->query->getInt('time', 0);
-
-        $session->set('total_time', $time);
+        $time = $session->get('total_time', 'N/A');
 
         return $this->render('game/finish.html.twig', [
             'score' => $score,

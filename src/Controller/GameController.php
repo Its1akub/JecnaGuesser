@@ -31,6 +31,7 @@ class GameController extends AbstractController
         $session->set('difficulty', strtolower($difficulty));
         $session->set('current_round', 0);
         $session->set('total_score', 0);
+        $session->set('test', true);
 
         $locationsForDifficulty = $em->getRepository(GameLocation::class)
             ->createQueryBuilder('g')
@@ -71,6 +72,9 @@ class GameController extends AbstractController
         $xGuess = (float)$request->request->get('x');
         $yGuess = (float)$request->request->get('y');
         $floorGuess = (float)$request->request->get('floor');
+        $total_time = (int)$request->request->get('total_time');
+
+        $session->set('total_time', $total_time);
 
         //$fs = new Filesystem();
         //$fs->appendToFile("logs.txt", sprintf("(%f, %f, %u, '%s', 'easy'),\n", $xGuess, $yGuess, $floorGuess, "L" . strval($currentRound + 73) . ".jpg"));
@@ -139,14 +143,20 @@ class GameController extends AbstractController
         $name = trim($request->request->get('playerName'));
         $score = $session->get('total_score', 0);
 
-        $time = $session->get('total_time', 0);
+        $time = $session->get('total_time', 999999);
         $difficulty = $session->get('difficulty', 'N/A');
 
+        if (!$session->get('test', false)) {
+            return new Response('Invalid', 400);
+        }
         if (!$name || strlen($name) > 100) {
             return new Response('Invalid name', 400);
         }
-        if (!$score || $score <= 0) {
-            return new Response('No points', 400);
+        if (!$score || $score <= 0 || $score > 25000) {
+            return new Response('Invalid points', 400);
+        }
+        if (!$time || $time <= 1) {
+            return new Response('Invalid time', 400);
         }
 
         $gameScore = new GameScore();
@@ -160,6 +170,7 @@ class GameController extends AbstractController
         $em->persist($gameScore);
         $em->flush();
 
+        $session->set('test', false);
         $session->invalidate();
 
         return $this->redirectToRoute('app_leaderboard', ['difficulty' => $difficulty]);

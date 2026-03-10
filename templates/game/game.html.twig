@@ -56,7 +56,7 @@
 
     <div class="map-wrapper" id="mapWrapper">
         <div class="image-container" id="imageContainer" onclick="placePin(event)">
-            <img src="{{ asset('maps/np1.png') }}" class="map-image" id="mapImage">
+            <img src="{{ asset('maps/np1.webp') }}" class="map-image" id="mapImage">
             <div id="mapPin" class="map-pin"></div>
 
             <div id="actualPin" class="actual-pin"></div>
@@ -110,8 +110,7 @@
       function submitGuess() {
           if (roundOver) {
               if (submitResponse.is_finished) {
-                const timeDisplay = document.querySelector('[data-countup-target="display"]').innerText;
-                window.location.href = submitResponse.redirect_url + "?time=" + parseInt(timeDisplay);
+                window.location.href = submitResponse.redirect_url;
                 return;
               }
               window.dispatchEvent(new CustomEvent('game:resume'));
@@ -134,7 +133,10 @@
           params.append('y', currentGuessY);
           params.append('floor', currentFloor);
 
-          //console.log(`(${currentGuessX}, ${currentGuessY}, ${currentFloor}, 'easy/loc7.png', 'easy'),`)
+          const timeDisplay = document.querySelector('[data-countup-target="display"]').innerText;
+          params.append('total_time', parseInt(timeDisplay));
+
+          //console.log(`(${currentGuessX}, ${currentGuessY}, ${currentFloor}, 'easy/loc7.webp', 'easy'),`)
 
           fetch("{{ path('game_guess') }}", {
               method: 'POST',
@@ -232,7 +234,7 @@
           currentFloor = floorNum;
 
           const img = document.getElementById('mapImage');
-          img.src = `/maps/np${floorNum + 1}.png`;
+          img.src = `/maps/np${floorNum + 1}.webp`;
 
           document.querySelectorAll('.floor-btn').forEach(btn => {
               btn.classList.remove('active');

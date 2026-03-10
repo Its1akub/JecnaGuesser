@@ -56,6 +56,16 @@ h1 {
     font-weight: 800;
 }
 
+.version {
+    position: absolute;
+    bottom: 0.75em;
+
+    font-weight: 800;
+    font-size: 1.1em;
+
+    color: #777;
+}
+
 .title-name {
     margin: 8px 0 6px 0;
 }
@@ -65,7 +75,7 @@ h1 {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 4.5em;
+    bottom: 3.5em;
     margin-inline: auto;
 }
 
@@ -77,6 +87,7 @@ h1 {
 
     padding: 5px 0;
     width: 75%;
+    max-width: 400px;
 
     border: 0.06em solid rgba(255, 255, 255, 0.4);
     border-radius: 1em;
@@ -292,6 +303,7 @@ h1 {
 
 .map-image {
     width: 100%;
+    max-width: 500px;
     height: auto;
     display: block;
     pointer-events: none;
@@ -577,7 +589,7 @@ h1 {
 
 .leaderboard-bar {
     position: sticky;
-    top: 1.5em;
+    top: 1em;
 
     width: 75%;
     max-width: 550px;
@@ -638,8 +650,11 @@ h1 {
 
 .leaderboard-table {
     width: 100%;
+    max-width: 800px;
+
     border-collapse: collapse;
     margin-top: 1.5em;
+    margin: auto;
     background: rgba(255, 255, 255, 0.08);
     border-radius: 1em;
     overflow: hidden;
@@ -665,8 +680,13 @@ h1 {
     background: rgba(0, 0, 0, 0.3);
     color: #aaa;
     text-transform: uppercase;
-    text-align: center;
-    font-size: 0.7rem;
+    text-align: left;
+    font-size: 0.65rem;
+}
+
+.no-wrap {
+    word-break: normal !important;
+    overflow-wrap: normal !important;
 }
 
 .rank-1 {
@@ -685,7 +705,7 @@ h1 {
     body {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         min-height: 100vh;
         margin: 0;

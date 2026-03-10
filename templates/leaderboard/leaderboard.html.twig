@@ -17,24 +17,26 @@
     </div>
 </div>
 
+<a href="{{ path('app_home') }}" class="diff-btn">Home</a>
+
 <table class="leaderboard-table">
     <thead>
         <tr>
-            <th>Rank</th>
-            <th>Player</th>
-            <th>Score</th>
-            <th>Time</th>
-            <th>Date</th>
+            <th class="no-wrap">Rank</th>
+            <th class="no-wrap">Player</th>
+            <th class="no-wrap">Score</th>
+            <th class="no-wrap">Time</th>
+            <th class="no-wrap">Date</th>
         </tr>
     </thead>
     <tbody>
         {% for score in scores %}
-            <tr class="rank-{{ loop.index }}">
+            <tr class="rank-{{ loop.index }} no-wrap">
                 <td>{% if loop.index == 1 %}🥇{% elseif loop.index == 2 %}🥈{% elseif loop.index == 3 %}🥉{% else %}{{ loop.index }}{% endif %}</td>
                 <td><strong>{{ score.playerName }}</strong></td>
-                <td>{{ score.score|number_format }}</td>
+                <td class="no-wrap" >{{ score.score|number_format }}</td>
                 <td>{{ score.time }}s</td>
-                <td>{{ score.playedAt|date('d/m/Y') }}</td>
+                <td>{{ score.playedAt|date('j/n/y') }}</td>
             </tr>
         {% else %}
             <tr>
@@ -43,7 +45,5 @@
         {% endfor %}
     </tbody>
 </table>
-
-<a href="{{ path('app_home') }}" class="diff-btn">Home</a>
 
 {% endblock %}
