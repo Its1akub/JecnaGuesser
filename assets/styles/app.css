@@ -594,11 +594,11 @@ h1 {
     width: 75%;
     max-width: 550px;
     margin: auto;
-    padding: 0.6em 1.8em;
+    padding: 0.4em 1.8em;
 
     color: var(--white);
-    background-color: rgba(255, 255, 255, 0.07);
-    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
 
     border-radius: 2em;
     border: 0.15em solid rgba(255, 255, 255, 0.1);
@@ -627,7 +627,7 @@ h1 {
     display: block;
     padding: 0.15em 1em;
     margin: auto;
-    width: 6em;
+    width: 100%;
     margin-block: 0.5em;
 
     border-radius: 0.5em;
@@ -694,6 +694,41 @@ h1 {
     font-size: 1.1rem;
 }
 
+
+.toggle-container {
+    margin-top: 0.15em;
+    display: flex;
+    justify-content: center;
+}
+
+.toggle-btn {
+    font-size: 0.85em;
+    color: #aaa;
+
+    padding: 0.15em 1em;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2em;
+
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+}
+
+.toggle-btn.toggle-active {
+    background: var(--primary);
+    color: var(--white);
+    border-color: rgba(255, 255, 255, 0.4);
+    font-weight: bold;
+}
+
+.toggle-btn .icon {
+    margin-right: 5px;
+}
 
 
 

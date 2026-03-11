@@ -18,7 +18,7 @@
 
         <div>
             <div {{ stimulus_controller('countup') }}
-                data-action="game:pause@window->countup#pause game:resume@window->countup#resume">
+                data-action="game:pause@window->countup#pause game:resume@window->countup#resume game:sync-time@window->countup#sync">
                 <p class="nav-element-info">
                     <span {{ stimulus_target('countup', 'display') }}>0s</span>
                 </p>
@@ -133,9 +133,6 @@
           params.append('y', currentGuessY);
           params.append('floor', currentFloor);
 
-          const timeDisplay = document.querySelector('[data-countup-target="display"]').innerText;
-          params.append('total_time', parseInt(timeDisplay));
-
           //console.log(`(${currentGuessX}, ${currentGuessY}, ${currentFloor}, 'easy/loc7.webp', 'easy'),`)
 
           fetch("{{ path('game_guess') }}", {
@@ -148,6 +145,9 @@
               submitResponse = data;
 
               window.dispatchEvent(new CustomEvent('game:pause'));
+              window.dispatchEvent(new CustomEvent('game:sync-time', {
+                  detail: { seconds: data.total_time }
+              }));
 
               document.getElementById('guessPointsCointainer').style.display = 'block';
               document.getElementById('guessPoints').innerText = data.points;
@@ -204,7 +204,10 @@
           const locImg = document.getElementById('locationImage');
           locImg.src = `/locations/${submitResponse.next_location_path}`;
 
-          //window.dispatchEvent(new CustomEvent('game:resume'));
+
+          fetch("{{ path('game_resume_timer') }}", {
+              method: 'POST'
+          });
       }
 
       function drawLine(x1Pct, y1Pct, x2Pct, y2Pct) {

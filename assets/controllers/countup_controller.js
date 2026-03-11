@@ -15,6 +15,17 @@ export default class extends Controller {
         this.stopTimer();
     }
 
+    sync(event) {
+            const serverSeconds = event.detail.seconds;
+            this.totalMs = serverSeconds * 1000;
+
+            this.draw();
+
+            if (this.running) {
+                this.lastTimestamp = Date.now();
+            }
+        }
+
     pause() {
         if (!this.running) return;
         this.stopTimer();

@@ -15,6 +15,13 @@
         <a href="{{ path('app_leaderboard', {difficulty: 'hard'}) }}"
            class="filter-button {{ difficulty == 'hard' ? 'active' : '' }}">Hard</a>
     </div>
+
+    <div class="toggle-container">
+        <a href="{{ path('app_leaderboard', {difficulty: difficulty, unique: isUnique ? 0 : 1}) }}"
+           class="toggle-btn {{ isUnique ? 'toggle-active' : '' }}">
+            <span class="icon">{{ isUnique ? '✓' : '○' }}</span> Best per Name
+        </a>
+    </div>
 </div>
 
 <a href="{{ path('app_home') }}" class="diff-btn">Home</a>

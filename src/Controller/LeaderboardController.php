@@ -20,17 +20,34 @@ final class LeaderboardController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        $criteria = [];
-        $criteria['difficulty'] = $difficulty;
+        $criteria = ['difficulty' => $difficulty];
 
         $scores = $em->getRepository(GameScore::class)->findBy(
             $criteria,
             ['Score' => 'DESC', 'time' => 'ASC']
         );
 
+
+        $isUnique = $request->query->getBoolean('unique', false);
+        if ($isUnique) {
+            $uniqueScores = [];
+            $seenNames = [];
+
+            foreach ($scores as $score) {
+                $name = $score->getPlayerName();
+                if (!in_array($name, $seenNames)) {
+                    $uniqueScores[] = $score;
+                    $seenNames[] = $name;
+                }
+            }
+            $scores = $uniqueScores;
+        }
+
+
         return $this->render('leaderboard/leaderboard.html.twig', [
             'scores' => $scores,
             'difficulty' => $difficulty,
+            'isUnique' => $isUnique
         ]);
     }
 }

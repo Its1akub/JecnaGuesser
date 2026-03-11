@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Filesystem\Filesystem;
+use App\Service\ContentModerator;
 
 class GameController extends AbstractController
 {
@@ -31,6 +32,7 @@ class GameController extends AbstractController
         $session->set('difficulty', strtolower($difficulty));
         $session->set('current_round', 0);
         $session->set('total_score', 0);
+        $session->set('total_time', 0);
         $session->set('test', true);
 
         $locationsForDifficulty = $em->getRepository(GameLocation::class)
@@ -45,6 +47,7 @@ class GameController extends AbstractController
 
         // Uložíme ID lokací do session
         $session->set('game_locations', array_map(fn($loc) => $loc->getId(), $gameLocations));
+        $session->set('round_start_time', microtime(true));
 
         return $this->render('game/game.html.twig', [
             'difficulty' => ucfirst($difficulty),
@@ -56,6 +59,17 @@ class GameController extends AbstractController
     #[Route('/game/guess', name: 'game_guess', methods: ['POST'])]
     public function guess(Request $request, SessionInterface $session, EntityManagerInterface $em): Response
     {
+        $roundStartTime = $session->get('round_start_time');
+        if (!$roundStartTime) {
+            return $this->json(['error' => 'Invalid game state'], 400);
+        }
+
+        $totalTime = $session->get('total_time', 0) + (microtime(true) - $roundStartTime);
+        $session->set('total_time', floor($totalTime));
+
+        $session->remove('round_start_time');
+
+
         $locationIds = $session->get('game_locations', []);
         $currentRound = $session->get('current_round', 0);
 
@@ -72,9 +86,6 @@ class GameController extends AbstractController
         $xGuess = (float)$request->request->get('x');
         $yGuess = (float)$request->request->get('y');
         $floorGuess = (float)$request->request->get('floor');
-        $total_time = (int)$request->request->get('total_time');
-
-        $session->set('total_time', $total_time);
 
         //$fs = new Filesystem();
         //$fs->appendToFile("logs.txt", sprintf("(%f, %f, %u, '%s', 'easy'),\n", $xGuess, $yGuess, $floorGuess, "L" . strval($currentRound + 73) . ".jpg"));
@@ -104,6 +115,7 @@ class GameController extends AbstractController
         return $this->json([
             'points' => $points,
             'total_score' => $totalScore,
+            'total_time' => $totalTime,
             'next_round' => $currentRound + 1,
             'is_finished' => $isFinished,
             'redirect_url' => $this->generateUrl('game_finish'),
@@ -137,8 +149,15 @@ class GameController extends AbstractController
         return (int)round($maxPoints * (exp(-$k * $normalizedDist) - exp(-$k)) / (1 - exp(-$k)));
     }
 
+    #[Route('/game/resume-timer', name: 'game_resume_timer', methods: ['POST'])]
+    public function resumeTimer(SessionInterface $session): Response
+    {
+        $session->set('round_start_time', microtime(true));
+        return $this->json(['status' => 'timer_started']);
+    }
+
     #[Route('/game/save', name: 'game_save', methods: ['POST'])]
-    public function save(Request $request, EntityManagerInterface $em, SessionInterface $session): Response
+    public function save(Request $request, EntityManagerInterface $em, SessionInterface $session, ContentModerator $moderator): Response
     {
         $name = trim($request->request->get('playerName'));
         $score = $session->get('total_score', 0);
@@ -152,6 +171,10 @@ class GameController extends AbstractController
         if (!$name || strlen($name) > 100) {
             return new Response('Invalid name', 400);
         }
+        if ($moderator->isProfane($name)) {
+            return new Response('Name contains prohibited content', 400);
+        }
+
         if (!$score || $score <= 0 || $score > 25000) {
             return new Response('Invalid points', 400);
         }
