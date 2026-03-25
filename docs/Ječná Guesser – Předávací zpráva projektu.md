@@ -16,10 +16,9 @@
 10. [Infrastruktura a nasazení](#10-infrastruktura-a-nasazen%C3%AD)
 11. [Evidence práce](#11-evidence-pr%C3%A1ce)
 12. [Ekonomické zhodnocení](#12-ekonomick%C3%A9-zhodnocen%C3%AD)
-13. [Testování](#13-testov%C3%A1n%C3%AD)
-14. [Naměřená data z logů](#14-nam%C4%9B%C5%99en%C3%A1-data-z-log%C5%AF)
-15. [Zhodnocení projektu](#15-zhodnocen%C3%AD-projektu)
-16. [Přílohy](#16-p%C5%99%C3%ADlohy)
+13. [Naměřená data z logů](#13-nam%C4%9B%C5%99en%C3%A1-data-z-log%C5%AF)
+14. [Zhodnocení projektu](#14-zhodnocen%C3%AD-projektu)
+15. [Přílohy](#15-p%C5%99%C3%ADlohy)
 
 ---
 
@@ -127,21 +126,21 @@ graph LR
 
 ### 5.1 Funkční požadavky
 
-| ID          | Název                                      | Popis                                                                                                                 | Zdroj | Ověření                                           |
-| ----------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- | ----- | ------------------------------------------------- |
-| REQ-FUNC-01 | Spuštění hry s výběrem obtížnosti          | Systém musí umožnit hráči vybrat obtížnost (easy, medium, hard) a spustit hru.                                        | UC-01 | Funkční test spuštění hry pro každý mód           |
-| REQ-FUNC-02 | Náhodný výběr lokací                       | Systém musí pro každé herní sezení náhodně vybrat 5 lokací odpovídajících zvolené obtížnosti.                         | UC-01 | Test náhodnosti – opakovaným spuštěním            |
-| REQ-FUNC-03 | Zobrazení fotografie lokace                | Systém musí zobrazit fotografii aktuální herní lokace.                                                                | UC-02 | Vizuální ověření – fotografie se načte            |
-| REQ-FUNC-04 | Přepínání pater mapy                       | Systém musí umožnit přepnout zobrazení mapy mezi patry 0 až 4.                                                        | UC-03 | Test přepínání – kliknutí na každé tlačítko patra |
-| REQ-FUNC-05 | Umístění pinu na mapu                      | Systém musí umožnit hráči umístit jeden pin na mapu kliknutím.                                                        | UC-04 | Test umístění – vizuální zobrazení pinu           |
-| REQ-FUNC-06 | Výpočet skóre kola                         | Systém musí vypočítat skóre kola na základě euklidovské vzdálenosti odhadu od skutečné polohy a vzdálenosti pater.    | UC-05 | Jednotkový test metody calculateScore             |
-| REQ-FUNC-07 | Zobrazení výsledku kola                    | Systém musí po odeslání odhadu zobrazit body, skutečnou polohu a čarou spojit odhad se skutečnou polohou.             | UC-05 | Funkční test po odeslání odhadu                   |
-| REQ-FUNC-08 | Časomíra                                   | Systém musí měřit a zobrazovat čas hry v reálném čase.                                                                | UC-05 | Test časomíry – spuštění a pauza                  |
-| REQ-FUNC-09 | Konec hry a zobrazení celkového výsledku   | Systém musí po 5 kolech přesměrovat na stránku s celkovým skóre, časem a obtížností.                                  | UC-07 | Test ukončení hry po 5 kolech                     |
-| REQ-FUNC-10 | Uložení výsledku                           | Systém musí umožnit uložit výsledek s uživatelským jménem do databáze.                                                | UC-08 | Test uložení – ověření v DB                       |
-| REQ-FUNC-11 | Moderace uživatelských jmen                | Systém musí prostřednictvím externí API (PurgoMalum) ověřit, že uživatelské jméno neobsahuje nevhodný obsah.          | UC-08 | Test moderace s nevhodným vstupem                 |
-| REQ-FUNC-12 | Žebříček s filtry                          | Systém musí zobrazit žebříček výsledků s možností filtrování dle obtížnosti a přepínání nejlepšího výsledku na hráče. | UC-09 | Funkční test žebříčku                             |
-| REQ-FUNC-13 | Sledování UTM návštěv                      | Systém musí automaticky zaznamenat návštěvníky přicházející z autorizovaných UTM zdrojů.                              | UC-10 | Test UTM trackingu – GET s parametry              |
+|ID|Název|Popis|Zdroj|Ověření|
+|---|---|---|---|---|
+|REQ-FUNC-01|Spuštění hry s výběrem obtížnosti|Systém musí umožnit hráči vybrat obtížnost (easy, medium, hard) a spustit hru.|UC-01|Funkční test spuštění hry pro každý mód|
+|REQ-FUNC-02|Náhodný výběr lokací|Systém musí pro každé herní sezení náhodně vybrat 5 lokací odpovídajících zvolené obtížnosti.|UC-01|Test náhodnosti – opakovaným spuštěním|
+|REQ-FUNC-03|Zobrazení fotografie lokace|Systém musí zobrazit fotografii aktuální herní lokace.|UC-02|Vizuální ověření – fotografie se načte|
+|REQ-FUNC-04|Přepínání pater mapy|Systém musí umožnit přepnout zobrazení mapy mezi patry 0 až 4.|UC-03|Test přepínání – kliknutí na každé tlačítko patra|
+|REQ-FUNC-05|Umístění pinu na mapu|Systém musí umožnit hráči umístit jeden pin na mapu kliknutím.|UC-04|Test umístění – vizuální zobrazení pinu|
+|REQ-FUNC-06|Výpočet skóre kola|Systém musí vypočítat skóre kola na základě euklidovské vzdálenosti odhadu od skutečné polohy a vzdálenosti pater.|UC-05|Jednotkový test metody calculateScore|
+|REQ-FUNC-07|Zobrazení výsledku kola|Systém musí po odeslání odhadu zobrazit body, skutečnou polohu a čarou spojit odhad se skutečnou polohou.|UC-05|Funkční test po odeslání odhadu|
+|REQ-FUNC-08|Časomíra|Systém musí měřit a zobrazovat čas hry v reálném čase.|UC-05|Test časomíry – spuštění a pauza|
+|REQ-FUNC-09|Konec hry a zobrazení celkového výsledku|Systém musí po 5 kolech přesměrovat na stránku s celkovým skóre, časem a obtížností.|UC-07|Test ukončení hry po 5 kolech|
+|REQ-FUNC-10|Uložení výsledku|Systém musí umožnit uložit výsledek s uživatelským jménem do databáze.|UC-08|Test uložení – ověření v DB|
+|REQ-FUNC-11|Moderace uživatelských jmen|Systém musí prostřednictvím externí API (PurgoMalum) ověřit, že uživatelské jméno neobsahuje nevhodný obsah.|UC-08|Test moderace s nevhodným vstupem|
+|REQ-FUNC-12|Žebříček s filtry|Systém musí zobrazit žebříček výsledků s možností filtrování dle obtížnosti a přepínání nejlepšího výsledku na hráče.|UC-09|Funkční test žebříčku|
+|REQ-FUNC-13|Sledování UTM návštěv|Systém musí automaticky zaznamenat návštěvníky přicházející z autorizovaných UTM zdrojů.|UC-10|Test UTM trackingu – GET s parametry|
 
 ### 5.2 Kvalitativní (nefunkční) požadavky
 
@@ -176,14 +175,14 @@ Kritéria hodnocení a jejich váhy: zkušenosti týmu (4), stabilita a dokument
 
 Kritéria: výkon (váha 3), zkušenosti týmu (váha 4).
 
-| Technologie   | Výkon (3)  | Zkušenosti (4) | Skóre  |
-| ------------- | ---------- | -------------- | ------ |
-| MariaDB       | 4 × 3 = 12 | 4 × 4 = 16     | **28** |
-| MySQL 8       | 4 × 3 = 12 | 3 × 4 = 12     | 24     |
-| PostgreSQL 16 | 5 × 3 = 15 | 2 × 4 = 8      | 23     |
-| SQLite        | 2 × 3 = 6  | 4 × 4 = 16     | 22     |
+|Technologie|Výkon (3)|Zkušenosti (4)|Skóre|
+|---|---|---|---|
+|MariaDB|4 × 3 = 12|4 × 4 = 16|**28**|
+|MySQL 8|4 × 3 = 12|3 × 4 = 12|24|
+|PostgreSQL 16|5 × 3 = 15|2 × 4 = 8|23|
+|SQLite|2 × 3 = 6|4 × 4 = 16|22|
 
-**Zvolená technologie: MariaDB.** Symfony projekt využívá přednastavený Docker stack s MariaDB. Databáze nabízí pokročilejší funkce a lepší integraci s Doctrine ORM než SQLite.
+**Zvolená technologie: MariaDB.** Databáze nabízí pokročilejší funkce a lepší integraci s Doctrine ORM než SQLite a tým s ní má přímé zkušenosti.
 
 ### 6.3 Frontend
 
@@ -191,7 +190,7 @@ Frontend je řešen pomocí Twig šablon integrovaných do Symfony, doplněných
 
 ### 6.4 Infrastruktura a webový server
 
-Aplikace je provozována na VPS serveru s OS Debian/Ubuntu. Webový server Nginx plní funkci reverzní proxy před procesem PHP-FPM. Kontejnerizace je řešena prostřednictvím Docker Compose (databáze, poštovní server). Zdrojový kód je spravován v repozitáři Git na GitHubu.
+Aplikace je provozována na VPS serveru s OS Debian/Ubuntu. Webový server Nginx plní funkci reverzní proxy před procesem PHP-FPM. Zdrojový kód je spravován v repozitáři Git na GitHubu.
 
 ---
 
@@ -207,7 +206,7 @@ Aplikace je postavena na vzoru Model-View-Controller (MVC) v rámci Symfony 6.4.
 graph TD
     subgraph Prohlížeč
         UI["Twig šablony + CSS"]
-        JS["Stimulus JS\n(countup, difficulty)"]
+        JS["JavaScript kontrolery\n(countup, difficulty)"]
     end
 
     subgraph Symfony_Backend
@@ -377,26 +376,26 @@ graph LR
 
 ### 8.2 Tabulka trasovatelnosti
 
-| Requirement ID | Use Case | Komponenta                       | Implementace                                    | Test                                   |
-| -------------- | -------- | -------------------------------- | ----------------------------------------------- | -------------------------------------- |
-| REQ-FUNC-01    | UC-01    | HomeController, GameController   | HomeController::index(), GameController::play() | test_home_play_redirect                |
-| REQ-FUNC-02    | UC-01    | GameController                   | GameController::play() – shuffle + slice        | test_random_locations                  |
-| REQ-FUNC-03    | UC-02    | Twig / assety                    | game.html.twig #locationImage                   | Vizuální test načítání obrázku         |
-| REQ-FUNC-04    | UC-03    | Stimulus / Twig                  | game.html.twig changeFloor()                    | Manuální klik na floor-btn             |
-| REQ-FUNC-05    | UC-04    | Stimulus / Twig                  | game.html.twig placePin()                       | Manuální klik na mapu                  |
-| REQ-FUNC-06    | UC-05    | GameController                   | GameController::calculateScore()                | GameControllerTest::testCalculateScore |
-| REQ-FUNC-07    | UC-05    | GameController + Twig            | game_guess AJAX response, drawLine()            | Funkční AJAX test                      |
-| REQ-FUNC-08    | UC-05    | Stimulus / countup_controller.js | countup_controller.js                           | Test pauzy a restartu časomíry         |
-| REQ-FUNC-09    | UC-07    | GameController, FinishController | GameController::guess() is_finished + redirect  | test_finish_redirect                   |
-| REQ-FUNC-10    | UC-08    | GameController                   | GameController::save(), entita GameScore        | test_save_score                        |
-| REQ-FUNC-11    | UC-08    | ContentModerator                 | ContentModerator::isProfane()                   | ContentModeratorTest::testIsProfane    |
-| REQ-FUNC-12    | UC-09    | LeaderboardController            | LeaderboardController::index()                  | test_leaderboard_filter                |
-| REQ-FUNC-13    | UC-10    | UtmSubscriber                    | UtmSubscriber::onKernelRequest()                | test_utm_tracking                      |
-| REQ-FUNC-14    | UC-11    | AdminController                  | AdminController::stats()                        | Manuální ověření /admin/stats          |
-| REQ-QUAL-01    | UC-05    | GameController                   | AJAX endpoint /game/guess                       | Měření doby odpovědi                   |
-| REQ-QUAL-02    | —        | Infrastruktura                   | Nginx + PHP-FPM, Docker                         | Monitoring uptime                      |
-| REQ-QUAL-03    | UC-08    | GameController                   | Validace v GameController::save()               | Test neplatných vstupů                 |
-| REQ-QUAL-06    | UC-01    | GameController                   | session->set() v GameController::play()         | Test integrity sezení                  |
+|Requirement ID|Use Case|Komponenta|Implementace|Test|
+|---|---|---|---|---|
+|REQ-FUNC-01|UC-01|HomeController, GameController|HomeController::index(), GameController::play()|test_home_play_redirect|
+|REQ-FUNC-02|UC-01|GameController|GameController::play() – shuffle + slice|test_random_locations|
+|REQ-FUNC-03|UC-02|Twig / assety|game.html.twig #locationImage|Vizuální test načítání obrázku|
+|REQ-FUNC-04|UC-03|Twig|game.html.twig changeFloor()|Manuální klik na floor-btn|
+|REQ-FUNC-05|UC-04|Twig|game.html.twig placePin()|Manuální klik na mapu|
+|REQ-FUNC-06|UC-05|GameController|GameController::calculateScore()|GameControllerTest::testCalculateScore|
+|REQ-FUNC-07|UC-05|GameController + Twig|game_guess AJAX response, drawLine()|Funkční AJAX test|
+|REQ-FUNC-08|UC-05|countup_controller.js|countup_controller.js|Test pauzy a restartu časomíry|
+|REQ-FUNC-09|UC-07|GameController, FinishController|GameController::guess() is_finished + redirect|test_finish_redirect|
+|REQ-FUNC-10|UC-08|GameController|GameController::save(), entita GameScore|test_save_score|
+|REQ-FUNC-11|UC-08|ContentModerator|ContentModerator::isProfane()|ContentModeratorTest::testIsProfane|
+|REQ-FUNC-12|UC-09|LeaderboardController|LeaderboardController::index()|test_leaderboard_filter|
+|REQ-FUNC-13|UC-10|UtmSubscriber|UtmSubscriber::onKernelRequest()|test_utm_tracking|
+|REQ-FUNC-14|UC-11|AdminController|AdminController::stats()|Manuální ověření /admin/stats|
+|REQ-QUAL-01|UC-05|GameController|AJAX endpoint /game/guess|Měření doby odpovědi|
+|REQ-QUAL-02|—|Infrastruktura|Nginx + PHP-FPM|Monitoring uptime|
+|REQ-QUAL-03|UC-08|GameController|Validace v GameController::save()|Test neplatných vstupů|
+|REQ-QUAL-06|UC-01|GameController|session->set() v GameController::play()|Test integrity sezení|
 
 ---
 
@@ -437,15 +436,18 @@ Veškerý herní stav je uložen v serverovém PHP sezení:
 - `difficulty` – zvolená obtížnost
 - `test` – příznak pro jednorázové uložení výsledku (ochrana před opakovaným uložením)
 
-Časomíra je implementována klientsky (Stimulus JS `countup_controller.js`), s průběžnou synchronizací se serverovým časem při odeslání odhadu prostřednictvím endpointu `/game/resume-timer`.
+Časomíra je implementována klientsky (`countup_controller.js`), s průběžnou synchronizací se serverovým časem při odeslání odhadu prostřednictvím endpointu `/game/resume-timer`.
 
 ---
 
 ## 10. Infrastruktura a nasazení
-### 10.1 Nastaveni DB
-1. V konfiguraci php.ini musi byt povoleno `extension=pdo_mysql`
-2. V MariaDB musi byt vytvorena databaze `jecna_guesser`
-3. Pro spusteni musi byt vytvoren soubor `.env.local`, ktery bude obsahovat: 
+
+### 10.1 Nastavení DB
+
+1. V konfiguraci php.ini musí být povoleno `extension=pdo_mysql`
+2. V MariaDB musí být vytvořena databáze `jecna_guesser`
+3. Pro spuštění musí být vytvořen soubor `.env.local`, který bude obsahovat:
+
 ```
 APP_ENV=dev 
 APP_SECRET=3e703ab691f61a73b560ee494a56bbff
@@ -453,6 +455,7 @@ DATABASE_URL="mysql://root:<heslo>@127.0.0.1:3306/jecna_guesser"
 MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0
 MAILER_DSN=null://null
 ```
+
 ### 10.2 Postup nasazení
 
 ```bash
@@ -469,35 +472,36 @@ symfony server:start
 
 ## 11. Evidence práce
 
-|Člen týmu|Aktivita|Požadavek|Čas (h)|
-|---|---|---|---|
-|Samuel Majer|Návrh a implementace herní logiky (guess, calculateScore)|REQ-FUNC-06, REQ-FUNC-07|8|
-|Samuel Majer|Implementace GameController (play, save, resume-timer)|REQ-FUNC-01, REQ-FUNC-09, REQ-FUNC-10|6|
-|Samuel Majer|Návrh a implementace správy sezení|REQ-QUAL-06|3|
-|Samuel Majer|Scrum – vedení sprintu, code review, merge|—|5|
-|Neil Malhotra|Nastavení Docker Compose, MariaDB, nasazení na VPS|REQ-QUAL-02|6|
-|Neil Malhotra|Implementace UtmSubscriber a entity Visit|REQ-FUNC-13, REQ-FUNC-14|4|
-|Neil Malhotra|Konfigurace Nginx a SSL|REQ-QUAL-02|3|
-|Jakub Novák|Frontend JavaScript (placePin, drawLine, changeFloor, reset)|REQ-FUNC-04, REQ-FUNC-05, REQ-FUNC-07|7|
-|Jakub Novák|Stimulus countup_controller.js (časomíra)|REQ-FUNC-08|3|
-|Jakub Novák|Twig šablona game.html.twig|REQ-FUNC-03|4|
-|Jakub Špernoga|Návrh UI a CSS (app.css, responzivita)|REQ-QUAL-04|8|
-|Jakub Špernoga|Twig šablony (home, leaderboard, finish)|REQ-FUNC-12, REQ-FUNC-09|4|
-|Jakub Špernoga|Vytvoření grafických assetů (logo, SVG)|—|3|
-|Adam Švec|Implementace ContentModerator a integrace do save()|REQ-FUNC-11|3|
-|Adam Švec|Implementace validací vstupu v GameController|REQ-QUAL-03, REQ-QUAL-07|3|
-|Adam Švec|Psaní testovacích scénářů a manuální testování|Testování|5|
+| Člen týmu                | Aktivita                                                     | Požadavek                             | Čas (h) |
+| ------------------------ | ------------------------------------------------------------ | ------------------------------------- | ------- |
+| Adam Švec                | Návrh a implementace herní logiky (guess, calculateScore)    | REQ-FUNC-06, REQ-FUNC-07              |         |
+| Adam Švec                | Implementace GameController (play, save, resume-timer)       | REQ-FUNC-01, REQ-FUNC-09, REQ-FUNC-10 |         |
+|                          | Návrh a implementace správy sezení                           | REQ-QUAL-06                           |         |
+| Jakub Novák              | Scrum – vedení sprintu, code review, merge                   | —                                     |         |
+| Neil Malhotra            | Nastavení MariaDB, nasazení na VPS                           | REQ-QUAL-02                           |         |
+| Neil Malhotra            | Implementace UtmSubscriber a entity Visit                    | REQ-FUNC-13, REQ-FUNC-14              |         |
+| Neil Malhotra            | Konfigurace Nginx a SSL                                      | REQ-QUAL-02                           |         |
+| Jakub Špernoga           | Frontend JavaScript (placePin, drawLine, changeFloor, reset) | REQ-FUNC-04, REQ-FUNC-05, REQ-FUNC-07 |         |
+| Jakub Novák              | countup_controller.js (časomíra)                             | REQ-FUNC-08                           |         |
+| Jakub Špernoga           | Twig šablona game.html.twig                                  | REQ-FUNC-03                           |         |
+| Jakub Špernoga           | Návrh UI a CSS (app.css, responzivita)                       | REQ-QUAL-04                           |         |
+| Jakub Špernoga           | Twig šablony (home, leaderboard, finish)                     | REQ-FUNC-12, REQ-FUNC-09              |         |
+| Jakub Špernoga/Adam Švec | Vytvoření grafických assetů (logo, SVG)                      | —                                     |         |
+| Adam Švec                | Implementace ContentModerator a integrace do save()          | REQ-FUNC-11                           |         |
+| Adam Švec                | Implementace validací vstupu v GameController                | REQ-QUAL-03, REQ-QUAL-07              |         |
+
+
 
 ### 11.1 Celková evidence
 
-|Člen týmu|Celkový čas (h)|
-|---|---|
-|Samuel Majer|22|
-|Neil Malhotra|13|
-|Jakub Novák|14|
-|Jakub Špernoga|15|
-|Adam Švec|11|
-|**Celkem tým**|**75**|
+| Člen týmu      | Celkový čas (h) |
+| -------------- | --------------- |
+| Samuel Majer   |                 |
+| Neil Malhotra  |                 |
+| Jakub Novák    |                 |
+| Jakub Špernoga |                 |
+| Adam Švec      |                 |
+| **Celkem tým** |                 |
 
 ---
 
@@ -507,17 +511,17 @@ symfony server:start
 
 Pro účel ekonomického odhadu je projekt posuzován jako komerční zakázka. Hodinová sazba junior/mid developera se pohybuje v rozmezí 500–800 Kč/h (Praha, 2026).
 
-|Oblast|Odhadovaný čas (h)|Hodinová sazba (Kč)|Náklady (Kč)|
-|---|---|---|---|
-|Analýza požadavků a dokumentace|12|600|7 200|
-|Návrh architektury a DB modelu|8|700|5 600|
-|Backend vývoj (PHP/Symfony)|30|700|21 000|
-|Frontend vývoj (JS, CSS, Twig)|20|600|12 000|
-|DevOps (Docker, Nginx, nasazení)|10|700|7 000|
-|Testování a QA|8|500|4 000|
-|Projektové řízení (Scrum Master)|7|800|5 600|
-|Rezerva (15 %)|—|—|9 360|
-|**CELKEM**|**95**|—|**71 760**|
+| Oblast                           | Odhadovaný čas (h) | Hodinová sazba (Kč) | Náklady (Kč) |
+| -------------------------------- | ------------------ | ------------------- | ------------ |
+| Analýza požadavků a dokumentace  |                    |                     |              |
+| Návrh architektury a DB modelu   |                    |                     |              |
+| Backend vývoj (PHP/Symfony)      |                    |                     |              |
+| Frontend vývoj (JS, CSS, Twig)   |                    |                     |              |
+| DevOps (Nginx, nasazení)         |                    |                     |              |
+| Testování a QA                   |                    |                     |              |
+| Projektové řízení (Scrum Master) |                    |                     |              |
+| Rezerva (15 %)                   | —                  | —                   |              |
+| **CELKEM**                       |                    | —                   |              |
 
 ### 12.2 Provozní náklady (měsíčně)
 
@@ -603,23 +607,22 @@ sequenceDiagram
 
 ### 15.1 Odkazy
 
-| Odkaz                                                  | Popis                            |
-| ------------------------------------------------------ | -------------------------------- |
-| [Github](https://github.com/Its1akub/JecnaGuesser.git) | Zdrojový kód projektu na GitHubu |
-| [Home page](https://jecnaguesser.app/)                 | Běžící aplikace (produkce)       |
-| [Leadboard](https://jecnaguesser.app/leaderboard/easy) | Žebříček – easy obtížnost        |
-
+|Odkaz|Popis|
+|---|---|
+|[Github](https://github.com/Its1akub/JecnaGuesser.git)|Zdrojový kód projektu na GitHubu|
+|[Home page](https://jecnaguesser.app/)|Běžící aplikace (produkce)|
+|[Leadboard](https://jecnaguesser.app/leaderboard/easy)|Žebříček – easy obtížnost|
 
 ### 15.2 Použité technologie – přehled
 
-| Technologie    | Verze    | Účel                                       |
-| -------------- | -------- | ------------------------------------------ |
-| PHP            | 8.1+     | Backend programovací jazyk                 |
-| Symfony        | 6.4      | PHP framework (MVC, ORM, routing, session) |
-| Doctrine ORM   | 3.6      | Objektově-relační mapování, migrace        |
-| MariaDB        | aktuální | Relační databáze                           |
-| Nginx          | aktuální | Webový server / reverzní proxy             |
-| PurgoMalum API | aktuální | Externí moderace obsahu                    |
+|Technologie|Verze|Účel|
+|---|---|---|
+|PHP|8.1+|Backend programovací jazyk|
+|Symfony|6.4|PHP framework (MVC, ORM, routing, session)|
+|Doctrine ORM|3.6|Objektově-relační mapování, migrace|
+|MariaDB|aktuální|Relační databáze|
+|Nginx|aktuální|Webový server / reverzní proxy|
+|PurgoMalum API|aktuální|Externí moderace obsahu|
 
 ### 15.3 Celkový diagram procesu požadavků
 
@@ -629,5 +632,5 @@ graph TD
     UC --> REQ["Požadavky (REQ-FUNC-01..14 REQ-QUAL-01..07)"]
     REQ --> ARCH["Architektura (Controller / Service / Entity)"]
     ARCH --> IMPL["Implementace (PHP / JS / Twig / CSS)"]
-    IMPL --> DEPLOY["Nasazení (VPS / Nginx / Docker)"]
+    IMPL --> DEPLOY["Nasazení (VPS / Nginx)"]
 ```
