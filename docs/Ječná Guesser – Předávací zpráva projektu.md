@@ -13,12 +13,13 @@
 7. [Architektura systému](#7-architektura-systému)
 8. [Trasovatelnost požadavků](#8-trasovatelnost-požadavků)
 9. [Implementace](#9-implementace)
-10. [Infrastruktura a nasazení](#10-infrastruktura-a-nasazení)
-11. [Evidence práce](#11-evidence-práce)
-12. [Ekonomické zhodnocení](#12-ekonomické-zhodnocení)
-13. [Naměřená data z logů](#13-naměřená-data-z-logů)
-14. [Zhodnocení projektu](#14-zhodnocení-projektu)
-15. [Přílohy](#15-přílohy)
+10. [Tesování](#10-testování)
+11. [Infrastruktura a nasazení](#11-infrastruktura-a-nasazení)
+12. [Evidence práce](#12-evidence-práce)
+13. [Ekonomické zhodnocení](#13-ekonomické-zhodnocení)
+14. [Naměřená data z logů](#14-naměřená-data-z-logů)
+15. [Zhodnocení projektu](#15-zhodnocení-projektu)
+16. [Přílohy](#16-přílohy)
 
 ---
 
@@ -440,9 +441,12 @@ Veškerý herní stav je uložen v serverovém PHP sessionu:
 
 ---
 
-## 10. Infrastruktura a nasazení
+## 10. Testovnání
 
-### 10.1 Nastavení DB
+Projekt využil metodiku testování v produkci, kde se software nasadí bez kontroly. Mimo jiné také tzv. „scream testů“, jež fungují na bázi náhlých změn a následné úpravy chyb, na které vývojáři rychle reagují.
+## 11. Infrastruktura a nasazení
+
+### 11.1 Nastavení DB
 
 1. V konfiguraci php.ini musí být povoleno `extension=pdo_mysql`
 2. V MariaDB musí být vytvořena databáze `jecna_guesser`
@@ -456,7 +460,7 @@ MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0
 MAILER_DSN=null://null
 ```
 
-### 10.2 Postup nasazení
+### 11.2 Postup nasazení
 
 ```bash
 git clone https://github.com/your-org/jecna-guesser.git
@@ -470,7 +474,7 @@ symfony server:start
 
 ---
 
-## 11. Evidence práce
+## 12. Evidence práce
 
 | Člen týmu                                                           | Aktivita                                                     | Požadavek                             | Čas (h) |
 | ------------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------- | ------- |
@@ -494,7 +498,7 @@ symfony server:start
 
 
 
-### 11.1 Celková evidence
+### 12.1 Celková evidence
 
 | Člen týmu      | Celkový čas (h) |
 | -------------- | --------------- |
@@ -507,9 +511,9 @@ symfony server:start
 
 ---
 
-## 12. Ekonomické zhodnocení
+## 13. Ekonomické zhodnocení
 
-### 12.1 Odhad nákladů na komerční realizaci
+### 13.1 Odhad nákladů na komerční realizaci
 
 Pro účel ekonomického odhadu je projekt posuzován jako komerční zakázka. Hodinová sazba junior/mid developera se pohybuje v rozmezí 500–800 Kč/h (Praha, 2026).
 
@@ -527,7 +531,7 @@ Pro účel ekonomického odhadu je projekt posuzován jako komerční zakázka. 
 
 
 
-### 12.2 Provozní náklady (měsíčně)
+### 13.2 Provozní náklady (měsíčně)
 
 | Položka                        | Měsíční náklady (Kč) |
 | ------------------------------ | -------------------- |
@@ -539,9 +543,9 @@ Poznámka: Projekt byl realizován jako studentská práce bez komerčního ohod
 
 ---
 
-## 13. Naměřená data z logů
+## 14. Naměřená data z logů
 
-### 13.1 Sledování návštěvnosti
+### 14.1 Sledování návštěvnosti
 
 Aplikace sleduje návštěvníky prostřednictvím UTM parametrů. Data jsou uložena v entitě `Visit` a dostupná prostřednictvím `/admin/stats`.
 
@@ -554,7 +558,7 @@ Aplikace sleduje návštěvníky prostřednictvím UTM parametrů. Data jsou ulo
 
 Konkrétní počty návštěv jsou dostupné administrátorovi prostřednictvím endpointu `/admin/stats`. Sledování je implementováno tak, aby zaznamenalo pouze jednu návštěvu na session a pouze z autorizovaných zdrojů.
 
-### 13.2 Ochrana před duplikáty a čištění URL
+### 14.2 Ochrana před duplikáty a čištění URL
 
 ```mermaid
 sequenceDiagram
@@ -577,9 +581,9 @@ sequenceDiagram
 
 ---
 
-## 14. Zhodnocení projektu
+## 15. Zhodnocení projektu
 
-### 14.1 Co se podařilo
+### 15.1 Co se podařilo
 
 - Plně funkční herní cyklus od úvodní stránky přes 5 kol až po uložení výsledku.
 - Precizní bodovací systém s exponenciální křivkou zohledňující vzdálenost i patro.
@@ -589,55 +593,27 @@ sequenceDiagram
 - Žebříček s možností filtrování dle obtížnosti a přepínání nejlepšího výsledku na hráče.
 - Robustní správa herního stavu na serveru zamezující manipulaci ze strany klienta.
 
-### 14.2 Co bylo problematické
+### 15.2 Co bylo problematické
 
 - Synchronizace časomíry mezi klientem (JS) a serverem (PHP session) vyžadovala dodatečný endpoint `/game/resume-timer`.
 - Generování a správa mapových souřadnic pro všechny lokace byl ruční a časově náročný proces.
 - Moderační API (PurgoMalum) je externí závislost – při nedostupnosti API je moderace přeskočena (chování fail-open).
 - Absence automatizovaného nasazení (CI/CD) prodlužuje čas nasazení.
-
-### 14.3 Možné rozšíření
-
-- Přidání CI/CD pipeline (GitHub Actions) pro automatické testování a nasazení.
-- Rozšíření o úplné testovací pokrytí (PHPUnit integrační testy).
-- Implementace uživatelských účtů s historií her.
-- Přidání animací a vizuálních efektů při zobrazení výsledku kola.
-- Rozšíření obsahu – další fotografie lokací pro všechny obtížnosti.
-- Implementace multiplayerového režimu nebo módu na čas.
+- Neexistující testy.
 
 ---
 
-## 15. Přílohy
+## 16. Přílohy
 
-### 15.1 Odkazy
+### 16.1 Odkazy
 
-|Odkaz|Popis|
-|---|---|
-|[Github](https://github.com/Its1akub/JecnaGuesser.git)|Zdrojový kód projektu na GitHubu|
-|[Home page](https://jecnaguesser.app/)|Běžící aplikace (produkce)|
-|[Leadboard](https://jecnaguesser.app/leaderboard/easy)|Žebříček – easy obtížnost|
+| Odkaz                                                  | Popis                            |
+| ------------------------------------------------------ | -------------------------------- |
+| [Github](https://github.com/Its1akub/JecnaGuesser.git) | Zdrojový kód projektu na GitHubu |
+| [Home page](https://jecnaguesser.app/)                 | Běžící aplikace (produkce)       |
+| [Leadboard](https://jecnaguesser.app/leaderboard/easy) | Žebříček – easy obtížnost        |
 
-### 15.2 Použité technologie – přehled
-
-|Technologie|Verze|Účel|
-|---|---|---|
-|PHP|8.1+|Backend programovací jazyk|
-|Symfony|6.4|PHP framework (MVC, ORM, routing, session)|
-|Doctrine ORM|3.6|Objektově-relační mapování, migrace|
-|MariaDB|aktuální|Relační databáze|
-|Nginx|aktuální|Webový server / reverzní proxy|
-|PurgoMalum API|aktuální|Externí moderace obsahu|
-
-### 15.3 Celkový diagram procesu požadavků
-# ### 15.1 Odkazy
-
-|Odkaz|Popis|
-|---|---|
-|[Github](https://github.com/Its1akub/JecnaGuesser.git)|Zdrojový kód projektu na GitHubu|
-|[Home page](https://jecnaguesser.app/)|Běžící aplikace (produkce)|
-|[Leadboard](https://jecnaguesser.app/leaderboard/easy)|Žebříček – easy obtížnost|
-
-### 15.2 Použité technologie – přehled
+### 16.2 Použité technologie – přehled
 
 |Technologie|Verze|Účel|
 |---|---|---|
@@ -647,4 +623,3 @@ sequenceDiagram
 |MariaDB|aktuální|Relační databáze|
 |Nginx|aktuální|Webový server / reverzní proxy|
 |PurgoMalum API|aktuální|Externí moderace obsahu|
-
