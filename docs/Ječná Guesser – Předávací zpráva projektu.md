@@ -5,20 +5,20 @@
 ## Obsah
 
 1. [Základní informace o projektu](#1-základní-informace-o-projektu)
-2. [Cíle projektu](#2-c%C3%ADle-projektu)
-3. [Stakeholdeři](#3-stakeholde%C5%99i)
+2. [Cíle projektu](#2-cíle-projektu)
+3. [Stakeholdeři](#3-stakeholdeři)
 4. [Use Cases](#4-use-cases)
-5. [Požadavky na systém](#5-po%C5%BEadavky-na-syst%C3%A9m)
-6. [Rozhodnutí o technologiích](#6-rozhodnut%C3%AD-o-technologi%C3%ADch)
-7. [Architektura systému](#7-architektura-syst%C3%A9mu)
-8. [Trasovatelnost požadavků](#8-trasovatelnost-po%C5%BEadavk%C5%AF)
+5. [Požadavky na systém](#5-požadavky-na-systém)
+6. [Rozhodnutí o technologiích](#6-rozhodnutí-o-technologiích)
+7. [Architektura systému](#7-architektura-systému)
+8. [Trasovatelnost požadavků](#8-trasovatelnost-požadavků)
 9. [Implementace](#9-implementace)
-10. [Infrastruktura a nasazení](#10-infrastruktura-a-nasazen%C3%AD)
-11. [Evidence práce](#11-evidence-pr%C3%A1ce)
-12. [Ekonomické zhodnocení](#12-ekonomick%C3%A9-zhodnocen%C3%AD)
-13. [Naměřená data z logů](#13-nam%C4%9B%C5%99en%C3%A1-data-z-log%C5%AF)
-14. [Zhodnocení projektu](#14-zhodnocen%C3%AD-projektu)
-15. [Přílohy](#15-p%C5%99%C3%ADlohy)
+10. [Infrastruktura a nasazení](#10-infrastruktura-a-nasazení)
+11. [Evidence práce](#11-evidence-práce)
+12. [Ekonomické zhodnocení](#12-ekonomické-zhodnocení)
+13. [Naměřená data z logů](#13-naměřená-data-z-logů)
+14. [Zhodnocení projektu](#14-zhodnocení-projektu)
+15. [Přílohy](#15-přílohy)
 
 ---
 
