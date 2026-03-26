@@ -13,7 +13,7 @@
 7. [Architektura systému](#7-architektura-systému)
 8. [Trasovatelnost požadavků](#8-trasovatelnost-požadavků)
 9. [Implementace](#9-implementace)
-10. [Tesování](#10-testování)
+10. [Testování](#10-testování)
 11. [Infrastruktura a nasazení](#11-infrastruktura-a-nasazení)
 12. [Evidence práce](#12-evidence-práce)
 13. [Ekonomické zhodnocení](#13-ekonomické-zhodnocení)
@@ -443,7 +443,7 @@ Veškerý herní stav je uložen v serverovém PHP sessionu:
 
 ---
 
-## 10. Testovnání
+## 10. Testování
 
 Projekt využil metodiku testování v produkci, kde se software nasadí bez kontroly. Mimo jiné také tzv. „scream testů“, jež fungují na bázi náhlých změn a následné úpravy chyb, na které vývojáři rychle reagují.
 ## 11. Infrastruktura a nasazení
@@ -625,3 +625,13 @@ sequenceDiagram
 |MariaDB|aktuální|Relační databáze|
 |Nginx|aktuální|Webový server / reverzní proxy|
 |PurgoMalum API|aktuální|Externí moderace obsahu|
+
+### 16.3 Možné rozšíření
+
+- Přidání CI/CD pipeline (GitHub Actions) pro automatické testování a nasazení.
+- Rozšíření o úplné testovací pokrytí (PHPUnit integrační testy).
+- Implementace uživatelských účtů s historií her.
+- Přidání animací a vizuálních efektů při zobrazení výsledku kola.
+- Rozšíření obsahu – další fotografie lokací pro všechny obtížnosti.
+- Implementace multiplayerového režimu nebo módu na čas.
+
