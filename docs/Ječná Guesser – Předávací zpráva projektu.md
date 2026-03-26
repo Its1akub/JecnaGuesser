@@ -31,6 +31,8 @@ Ječná Guesser je webová geolokační hra inspirovaná populárními tituly ty
 
 Hra se skládá z pěti kol, každé s jinou lokací. Na základě přesnosti odhadu je hráč hodnocen bodovým systémem až do maxima 25 000 bodů. Výsledky jsou evidovány v žebříčku hráčů.
 
+Odevzdání proběhlo dne 26. 03. 2026.
+
 ### 1.2 Členové týmu a jejich role
 
 |Jméno|Role|Oblasti odpovědnosti|
