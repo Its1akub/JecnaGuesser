@@ -13,10 +13,10 @@
 7. [Architektura systému](#7-architektura-systému)
 8. [Trasovatelnost požadavků](#8-trasovatelnost-požadavků)
 9. [Implementace](#9-implementace)
-10. [Testování](#10-testování)
-11. [Infrastruktura a nasazení](#11-infrastruktura-a-nasazení)
-12. [Evidence práce](#12-evidence-práce)
-13. [Ekonomické zhodnocení](#13-ekonomické-zhodnocení)
+10. [Infrastruktura a nasazení](#10-infrastruktura-a-nasazení)
+11. [Evidence práce](#11-evidence-práce)
+12. [Ekonomické zhodnocení](#12-ekonomické-zhodnocení)
+13. [Testování](#13-testování)
 14. [Naměřená data z logů](#14-naměřená-data-z-logů)
 15. [Zhodnocení projektu](#15-zhodnocení-projektu)
 16. [Přílohy](#16-přílohy)
@@ -178,12 +178,12 @@ Kritéria hodnocení a jejich váhy: zkušenosti týmu (4), stabilita a dokument
 
 Kritéria: výkon (váha 3), zkušenosti týmu (váha 4).
 
-|Technologie|Výkon (3)|Zkušenosti (4)|Skóre|
-|---|---|---|---|
-|MariaDB|4 × 3 = 12|4 × 4 = 16|**28**|
-|MySQL 8|4 × 3 = 12|3 × 4 = 12|24|
-|PostgreSQL 16|5 × 3 = 15|2 × 4 = 8|23|
-|SQLite|2 × 3 = 6|4 × 4 = 16|22|
+| Technologie   | Výkon (3)  | Zkušenosti (4) | Skóre  |
+| ------------- | ---------- | -------------- | ------ |
+| MariaDB       | 4 × 3 = 12 | 4 × 4 = 16     | **28** |
+| MySQL 8       | 4 × 3 = 12 | 3 × 4 = 12     | 24     |
+| PostgreSQL 16 | 5 × 3 = 15 | 2 × 4 = 8      | 23     |
+| SQLite        | 2 × 3 = 6  | 4 × 4 = 16     | 22     |
 
 **Zvolená technologie: MariaDB.** Databáze nabízí pokročilejší funkce a lepší integraci s Doctrine ORM než SQLite a tým s ní má přímé zkušenosti.
 
@@ -193,7 +193,16 @@ Frontend je řešen pomocí Twig šablon integrovaných do Symfony, doplněných
 
 ### 6.4 Infrastruktura a webový server
 
-Aplikace je provozována na VPS serveru s OS Debian/Ubuntu. Webový server Nginx plní funkci reverzní proxy před procesem PHP-FPM. Zdrojový kód je spravován v repozitáři Git na GitHubu.
+Kritéria: Uložiště (váha 2/50GB), CPU (váha 4), RAM (váha 4).
+
+| Hosting      | Cena   | Uložiště (2/50GB) | CPU (4)    | RAM (4)       | Skóre |
+| ------------ | ------ | ----------------- | ---------- | ------------- | ----- |
+| OVH          | $5.75  | 100GB × 2 = 4     | 6 × 4 = 24 | 12GB × 4 = 48 | 76    |
+| DigitalOcean | $12.00 | 50GB × 2 = 2      | 1 × 4 = 4  | 2GB ×  2 = 8  | 14    |
+| Hetzner      | €4.20  | 50GB × 2 = 2      | 2 × 4 = 8  | 384MB × 4 = 1 | 11    |
+
+Aplikace je provozována na VPS serveru od OVH s Fedora linuxem. Webový server Nginx plní funkci reverzní proxy před procesem PHP-FPM. Zdrojový kód je spravován v repozitáři Git na GitHubu.
+
 
 ---
 
@@ -442,13 +451,9 @@ Veškerý herní stav je uložen v serverovém PHP sessionu:
 Časomíra je implementována klientsky (`countup_controller.js`), s průběžnou synchronizací se serverovým časem při odeslání odhadu prostřednictvím endpointu `/game/resume-timer`.
 
 ---
+## 10. Infrastruktura a nasazení
 
-## 10. Testování
-
-Projekt využil metodiku testování v produkci, kde se software nasadí bez kontroly. Mimo jiné také tzv. „scream testů“, jež fungují na bázi náhlých změn a následné úpravy chyb, na které vývojáři rychle reagují.
-## 11. Infrastruktura a nasazení
-
-### 11.1 Nastavení DB
+### 10.1 Nastavení DB
 
 1. V konfiguraci php.ini musí být povoleno `extension=pdo_mysql`
 2. V MariaDB musí být vytvořena databáze `jecna_guesser`
@@ -462,7 +467,7 @@ MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0
 MAILER_DSN=null://null
 ```
 
-### 11.2 Postup nasazení
+### 10.2 Postup nasazení
 
 ```bash
 git clone https://github.com/your-org/jecna-guesser.git
@@ -476,7 +481,7 @@ symfony server:start
 
 ---
 
-## 12. Evidence práce
+## 11. Evidence práce
 
 | Člen týmu                                                           | Aktivita                                                     | Požadavek                             | Čas (h) |
 | ------------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------- | ------- |
@@ -500,7 +505,7 @@ symfony server:start
 
 
 
-### 12.1 Celková evidence
+### 11.1 Celková evidence
 
 | Člen týmu      | Celkový čas (h) |
 | -------------- | --------------- |
@@ -513,9 +518,9 @@ symfony server:start
 
 ---
 
-## 13. Ekonomické zhodnocení
+## 12. Ekonomické zhodnocení
 
-### 13.1 Odhad nákladů na komerční realizaci
+### 12.1 Odhad nákladů na komerční realizaci
 
 Pro účel ekonomického odhadu je projekt posuzován jako komerční zakázka. Hodinová sazba junior/mid developera se pohybuje v rozmezí 500–800 Kč/h (Praha, 2026).
 
@@ -533,7 +538,7 @@ Pro účel ekonomického odhadu je projekt posuzován jako komerční zakázka. 
 
 
 
-### 13.2 Provozní náklady (měsíčně)
+### 12.2 Provozní náklady (měsíčně)
 
 | Položka                        | Měsíční náklady (Kč) |
 | ------------------------------ | -------------------- |
@@ -544,7 +549,11 @@ Pro účel ekonomického odhadu je projekt posuzován jako komerční zakázka. 
 Poznámka: Projekt byl realizován jako studentská práce bez komerčního ohodnocení. Odhad vychází z běžných tržních sazeb.
 
 ---
+## 13. Testování
 
+Projekt využil metodiku testování v produkci, kde se software nasadí bez kontroly. Mimo jiné také tzv. „scream testů“, jež fungují na bázi náhlých změn a následné úpravy chyb, na které vývojáři rychle reagují.
+
+---
 ## 14. Naměřená data z logů
 
 ### 14.1 Sledování návštěvnosti
@@ -580,6 +589,24 @@ sequenceDiagram
         US-->>U: Bez změny
     end
 ```
+###  14.3 Statistiky
+#### 14.3.1 Návštěvnost v číslech
+
+| Kategorie            | Naměřené hodnota |
+| -------------------- | ---------------- |
+| Celková návštěvnost  | 17 611           |
+| Unikátní IP adresy   | 1 163            |
+| Unikátní návštěvníci | 436              |
+#### 14.3.2 Přístupy z marketingových zdrojů
+
+| Zdroj           | Počet návštěvníků |
+| --------------- | ----------------- |
+| Discord         | 10                |
+| Instagram       | 17                |
+| QR kód ve škole | 151               |
+
+
+
 
 ---
 
